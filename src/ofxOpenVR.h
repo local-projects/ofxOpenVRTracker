@@ -5,7 +5,7 @@
 
 // REQUIREMENTS
 // Requires the OpenVR Library (tested with v1.1.3b on Windows 10)
-// Requires the ofxRemoteGUI addon
+// Requires the ofxRemoteGUI addon.
 
 // NOTES ON DESIGN & STRUCTURE
 // Extends ofThread so updates from OpenVR are received at highest frequencies possible. The applications that use this addon can choose to make use of these higher framerates, or ignore this functionality and use it at the base app update frequency.
@@ -18,6 +18,7 @@
 
 #include "ofMain.h"
 #include <openvr.h>
+#include "Device.hpp"
 
 
 
@@ -62,27 +63,37 @@ public:
 // TODO
 // Add RemoteUI functionality
 
+
+
+// State of this addon
 enum ofxOpenVRState {
 	DISCONNECTED,
-	CONNECTING,
+	TRY_CONNECT, // actively trying to connect
 	CONNECTED
-
-
 };
+
 
 //--------------------------------------------------------------
 class ofxOpenVR : public ofThread {
 public:
+    
+    /// \brief Create an instance of ofxOpenVR. There should only be one per program.
+    ///
+    ofxOpenVR();
 
-	// Setup OpenVR and connect to a running instance of SteamVR. 
-	// This addon requires that an instance of SteamVR is running. 
-	void start();
+    /// \brief Attempt to connect to a running instance of SteamVR.
+    ///
+    /// A running instance of SteamVR is required for this addon to work properly. Call this function once at the statrt of your program. It will attempt to connect continuously for a maxAttempts number of times, waiting waitTime milliseconds between each until connected or unsuccessful.
+    ///
+	void connect(int maxAttempts = 5, int waitTimeMS = 5000);
 
-	// Check whether we're connected to SteamVR
+	/// \brief Check whether we're connected to SteamVR
+    ///
 	bool isConnected();
-
-	// Exit 
-	void stop();
+    
+    /// \brief Disconnect from SteamVR. (Call this on exiting your application.
+    ///
+	void disconnect();
 
 
 
@@ -93,7 +104,7 @@ public:
 
 
 
-	void update();;
+	void update();
 
 	void drawDebugInfo(float x = 10.0f, float y = 20.0f);
 
@@ -110,18 +121,36 @@ public:
 	ofEvent<ofxOpenVRControllerEventArgs> ofxOpenVRControllerEvent;
 
 private:
+    
+    // State of the app
+    ofxOpenVRState state;
+    // set the state of this app
+    void setState(ofxOpenVRState _state);
 
+    // (function run in the thread)
 	void threadedFunction();
 
-	// Attempt to connect to an active (running) instance of SteamVR
+	// Attempt to connect once to an active (running) instance of SteamVR
 	bool connectToSteamVR();
-	int connectionAttemptCount = 0;
-	int maxConnectionAttempts = 5;
-	int nSecondsConnectionWaitTime = 5;
+    // Connection parameters
+	int connectionAttemptsCounter = 0;
+	int connectionAttemptsMax;
+	int connectionAttemptWaitTime; // milliseconds
+    int64_t lastConnectionAttemptTimeMS;
 
 	// This pointer references the primary event/data handling abilities of OpenVR
-	vr::IVRSystem *system;
+    vr::IVRSystem *system = NULL;
 
+    // Get all information associated with connected devices
+    void getDeviceInfo();
+    // Pose array into which device information is initially loaded
+    void getAllPoses(vr::TrackedDevicePose_t* _poses, int arrayLength);
+    
+    vr::TrackedDevicePose_t devicePoses[vr::k_unMaxTrackedDeviceCount];
+    
+    
+    
+    
 
 
 	std::string _strTrackingSystemName;

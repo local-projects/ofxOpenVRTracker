@@ -5,27 +5,28 @@ void ofApp::setup(){
 	ofSetVerticalSync(false);
 
 	// Setup OpenVR and connect to the SteamVR server.
-	openvr.connect();
+    openvr.connect();
 
 	ofAddListener(openvr.ofxOpenVRControllerEvent, this, &ofApp::controllerEvent);
 }
 
 //--------------------------------------------------------------
 void ofApp::exit() {
+    
 	ofRemoveListener(openvr.ofxOpenVRControllerEvent, this, &ofApp::controllerEvent);
 
-	openvr.exit();
+    openvr.disconnect();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	openvr.update();
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-	openvr.drawDebugInfo();
+//    openvr.drawDebugInfo();
 }
 
 //--------------------------------------------------------------

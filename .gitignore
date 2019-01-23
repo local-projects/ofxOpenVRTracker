@@ -11,6 +11,7 @@ Makefile
 *.suo
 *.db
 *.opendb
+libs/openvr_annotations
 
 *.depend
 *.layout

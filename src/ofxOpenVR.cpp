@@ -17,27 +17,41 @@ std::string getTrackedDeviceString(vr::IVRSystem *pHmd, vr::TrackedDeviceIndex_t
 	return sResult;
 }
 
+//--------------------------------------------------------------
+ofxOpenVR::ofxOpenVR() {
+    
+    setState(DISCONNECTED);
+}
 
 //--------------------------------------------------------------
-void ofxOpenVR::start()
-{
-	ofLogNotice() << "Setting up OpenVR...";
-
-	if (isThreadRunning()) {
-		ofLogNotice() << "OpenVR thread is currently running. Do not call start again."
+void ofxOpenVR::connect(int maxAttempts, int waitTimeMS) {
+    
+    // Store these parameters
+    connectionAttemptsMax = maxAttempts;
+    connectionAttemptWaitTime = waitTimeMS;
+    lastConnectionAttemptTimeMS = -connectionAttemptWaitTime;
+    
+    // Reset the counter
+    // Should this be here or below this "if" block?
+    connectionAttemptsCounter = 0;
+    
+    // Check to see if we really need to connect.
+    if (isConnected()) {
+        
+        ofLogNotice() << "OpenVR is already connected.";
+        return;
+        
+    } else if (isThreadRunning()) {
+        
+        ofLogNotice() << "OpenVR is still trying to connect. There's no need to call connect() again.";
+        return;
 	}
 
-	// Initialize variables
-	system = NULL;
-
-	// Begin the thread and attempt to connect
-	startThread();
-
-
-
-	// Connect to SteamVR
-	bool bConnectedToSteamVR = connectToSteamVR();
-
+    // change the state of this addon
+    setState(TRY_CONNECT);
+    
+	// Begin the thread and begin trying to connect
+    startThread();
 }
 
 //--------------------------------------------------------------
@@ -45,11 +59,78 @@ void ofxOpenVR::threadedFunction() {
 
 	while (isThreadRunning()) {
 
-		// Attempt to connect
-
-
-
-
+        switch (state) {
+                
+            case DISCONNECTED: {
+                
+                // If the addon is disconnected from the SteamVR server, then this thread need not be running
+                stopThread();
+                
+            } break;
+                
+            case TRY_CONNECT: {
+                
+                // If the app is actively trying to connect...
+                // If we haven't connected too many times...
+                if (connectionAttemptsCounter <= connectionAttemptsMax) {
+                    
+                    // Check if we're ready to try connecting again
+                    int64_t thisTime = ofGetElapsedTimeMillis();
+                    if (thisTime - lastConnectionAttemptTimeMS >= connectionAttemptWaitTime) {
+                        
+                        // increment the counter
+                        connectionAttemptsCounter++;
+                        
+                        // Attempt to Connect
+                        bool bConnected = connectToSteamVR();
+                        
+                        // Save this connection time
+                        lastConnectionAttemptTimeMS = thisTime;
+                        
+                        // If we connected, then switch the state
+                        if (bConnected) setState(CONNECTED);
+                    }
+                } else {
+                    // We've surpassed our allotted number of attempts. Stop trying to connect.
+                    setState(DISCONNECTED);
+                }
+            } break;
+                
+            case CONNECTED: {
+                
+                // Check to make sure we're still connected
+                // Should this also ping the SteamVR Server?
+                if (system == NULL) {
+                    
+                    // change the state
+                    setState(DISCONNECTED);
+                    // try to reconnect
+                    connect();
+                    
+                } else {
+                    
+                    // ---- THIS IS, ESSENTIALLY, THE UPDATE LOOP ----
+                    
+                    // Get all connected devices and their properties (like position, orientation, battery status, connected, tracking)
+                    getDeviceInfo();
+                    
+                    
+                    // Check for new events (like button presses, status changes in the system, etc.)
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                
+            } break;
+                
+            default:
+                break;
+        }
+        
+        
 
 
 	}
@@ -62,49 +143,79 @@ bool ofxOpenVR::connectToSteamVR()
 	ofLogNotice() << "Attempting to connect to SteamVR...";
 
 	// Set the error to be returned to the no error value
-	vr::EVRInitError eError = vr::VRInitError_None;
+	vr::EVRInitError initError = vr::VRInitError_None;
 
 	// The IVRSystem is the primary handler for our interaction with openVR. Here, we will initialize it. We need to tell it what kind of applicatio this is, using an EVRApplicationType. Types are documented in openvr.h. Here, we will use the type:
-	vr::EVRApplicationType myApplicationType = vr::EVRApplicationType::VRApplication_Other;
+	vr::EVRApplicationType applicationType = vr::EVRApplicationType::VRApplication_Other;
 
-	// Initialize the system
-	system = vr::VR_Init(&eError, vr::VRApplication_Other);
+	// Initialize the system with the error reference and the type of application.
+	system = vr::VR_Init(&initError, applicationType);
 
-	// Check to see if we connected
-	if (eError != vr::VRInitError_None)
-	{
+	// Check to see if the init was successful
+	if (initError != vr::VRInitError_None) {
+        
 		// We didn't connect properly
 		system = NULL;
-		string error = vr::VR_GetVRInitErrorAsEnglishDescription(eError);
+		string error = vr::VR_GetVRInitErrorAsEnglishDescription(initError);
 		ofLogError() << "Couldn't connect to SteamVR: " + error;
 		return false;
-	}
-	else {
+        
+    } else if (system == NULL) {
+        
+        // What happens when SteamVR stops before this app does? Does system remain NULL?
+        
+        // If for some strange reason system is still null, init was not successful
+        ofLogError() << "IVRSystem should not be NULL here! Init was not successful even though there were no errors returned.";
+        return false;
+        
+    } else {
+        
 		// We connected!
-		ofLogNotice() << "Successfully connected to SteamVR."
+        ofLogNotice() << "Successfully connected to SteamVR.";
+        
 	}
 	return true;
 }
 
 //--------------------------------------------------------------
 bool ofxOpenVR::isConnected() {
-	return system != NULL;
+    
+    return state == CONNECTED;
 }
 
-
-
-
-
-
 //--------------------------------------------------------------
-void ofxOpenVR::stop()
+void ofxOpenVR::disconnect()
 {
-	if (system)
-	{
+	if (system || isConnected()) {
+        
+        // Set the new state
+        setState(DISCONNECTED);
+        
+        // Shutdown the connection
 		vr::VR_Shutdown();
+        
+        // Reset the system pointer
 		system = NULL;
 	}
 }
+
+//--------------------------------------------------------------
+void ofxOpenVR::getDeviceInfo() {
+
+    // Question: Should I just iterate through all possible device ID's? There are only 16 possible ones. Then, we would know when devices are tracked (but might still be connected), and we could monitor all battery info, etc.
+    
+    // First, iterate through all tracked devices
+    system->GetDeviceToAbsoluteTrackingPose(vr::ETrackingUniverseOrigin::TrackingUniverseStanding, 0, devicePoses, vr::k_unMaxTrackedDeviceCount);
+    
+    
+    
+}
+
+//--------------------------------------------------------------
+
+
+
+
 
 //--------------------------------------------------------------
 void ofxOpenVR::update()
@@ -240,9 +351,6 @@ bool ofxOpenVR::isControllerConnected(vr::ETrackedControllerRole nController)
 
 	return false;
 }
-
-
-
 
 //--------------------------------------------------------------
 void ofxOpenVR::updateDevicesMatrixPose()
