@@ -5,7 +5,7 @@ void ofApp::setup(){
 	ofSetVerticalSync(false);
 
 	// Setup OpenVR and connect to the SteamVR server.
-	openvr.setup();
+	openvr.connect();
 
 	ofAddListener(openvr.ofxOpenVRControllerEvent, this, &ofApp::controllerEvent);
 }

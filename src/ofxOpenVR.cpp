@@ -19,26 +19,85 @@ std::string getTrackedDeviceString(vr::IVRSystem *pHmd, vr::TrackedDeviceIndex_t
 
 
 //--------------------------------------------------------------
-//--------------------------------------------------------------
-void ofxOpenVR::setup()
+void ofxOpenVR::start()
 {
-	ofLogNotice() << "Setting up ofxOpenVR";
+	ofLogNotice() << "Setting up OpenVR...";
 
-	// Initialize vars
+	if (isThreadRunning()) {
+		ofLogNotice() << "OpenVR thread is currently running. Do not call start again."
+	}
+
+	// Initialize variables
 	system = NULL;
-	_iTrackedControllerCount = 0;
-	_leftControllerDeviceID = -1;
-	_rightControllerDeviceID = -1;
-	_iTrackedControllerCount_Last = -1;
-	_iValidPoseCount = 0;
-	_iValidPoseCount_Last = -1;
+
+	// Begin the thread and attempt to connect
+	startThread();
+
+
 
 	// Connect to SteamVR
-	connectToSteamVR();
+	bool bConnectedToSteamVR = connectToSteamVR();
+
 }
 
 //--------------------------------------------------------------
-void ofxOpenVR::exit()
+void ofxOpenVR::threadedFunction() {
+
+	while (isThreadRunning()) {
+
+		// Attempt to connect
+
+
+
+
+
+
+	}
+}
+
+//--------------------------------------------------------------
+bool ofxOpenVR::connectToSteamVR()
+{
+	// Loading the SteamVR Runtime
+	ofLogNotice() << "Attempting to connect to SteamVR...";
+
+	// Set the error to be returned to the no error value
+	vr::EVRInitError eError = vr::VRInitError_None;
+
+	// The IVRSystem is the primary handler for our interaction with openVR. Here, we will initialize it. We need to tell it what kind of applicatio this is, using an EVRApplicationType. Types are documented in openvr.h. Here, we will use the type:
+	vr::EVRApplicationType myApplicationType = vr::EVRApplicationType::VRApplication_Other;
+
+	// Initialize the system
+	system = vr::VR_Init(&eError, vr::VRApplication_Other);
+
+	// Check to see if we connected
+	if (eError != vr::VRInitError_None)
+	{
+		// We didn't connect properly
+		system = NULL;
+		string error = vr::VR_GetVRInitErrorAsEnglishDescription(eError);
+		ofLogError() << "Couldn't connect to SteamVR: " + error;
+		return false;
+	}
+	else {
+		// We connected!
+		ofLogNotice() << "Successfully connected to SteamVR."
+	}
+	return true;
+}
+
+//--------------------------------------------------------------
+bool ofxOpenVR::isConnected() {
+	return system != NULL;
+}
+
+
+
+
+
+
+//--------------------------------------------------------------
+void ofxOpenVR::stop()
 {
 	if (system)
 	{
@@ -182,64 +241,7 @@ bool ofxOpenVR::isControllerConnected(vr::ETrackedControllerRole nController)
 	return false;
 }
 
-//--------------------------------------------------------------
-bool ofxOpenVR::connectToSteamVR()
-{
-	// Loading the SteamVR Runtime
 
-	// Set the error to be returned to the no error value
-	vr::EVRInitError eError = vr::VRInitError_None;
-	// The IVRSystem is the primary handler for our interaction with openVR. Here, we will initialize it. We need to tell it what kind of applicatio this is, using an EVRApplicationType. Types are documented in openvr.h. Here, we will use the type:
-	vr::EVRApplicationType myApplicationType = vr::EVRApplicationType::VRApplication_Other;
-	// Initialize the system
-	system = vr::VR_Init(&eError, vr::VRApplication_Scene);
-	// Check to see what error we got
-	if (eError != vr::VRInitError_None)
-	{
-		system = NULL;
-		char buf[1024];
-		sprintf_s(buf, sizeof(buf), "Unable to init VR runtime: %s", vr::VR_GetVRInitErrorAsEnglishDescription(eError));
-		return false;
-	}
-	else {
-		ofLogNotice() << "No initialization error was received for vr::VR_Init()";
-	}
-
-	// This is not used for now
-	/*_pRenderModels = (vr::IVRRenderModels *)vr::VR_GetGenericInterface(vr::IVRRenderModels_Version, &eError);
-	if (!_pRenderModels)
-	{
-		system = NULL;
-		vr::VR_Shutdown();
-
-		char buf[1024];
-		sprintf_s(buf, sizeof(buf), "Unable to get render model interface: %s", vr::VR_GetVRInitErrorAsEnglishDescription(eError));
-		return false;
-	}
-	_strTrackingSystemName = "No Driver";
-	_strTrackingSystemModelNumber = "No Display";
-
-	_strTrackingSystemName = getTrackedDeviceString(system, vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_TrackingSystemName_String);
-	_strTrackingSystemModelNumber = getTrackedDeviceString(system, vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ModelNumber_String);
-
-	_fNearClip = 0.1f;
-	_fFarClip = 30.0f;
-
-	_bIsGLInit = initGL();
-	if (!_bIsGLInit)
-	{
-		printf("%s - Unable to initialize OpenGL!\n", __FUNCTION__);
-		return false;
-	}
-
-	if (!initCompositor())
-	{
-		printf("%s - Failed to initialize VR Compositor!\n", __FUNCTION__);
-		return false;
-	}*/
-
-	return true;
-}
 
 
 //--------------------------------------------------------------
