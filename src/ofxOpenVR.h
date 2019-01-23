@@ -1,8 +1,10 @@
 #pragma once
 
+// A previous version of this addon made it possible to submit renderings to the head mounted display. This version strips away that functionality, focusing on the ability to track the position and orientation of the hmd, controllers and any trackers.
+// ofEvents are registered for each of the types of devices. Add a listener to your application to retrieve these position/orientation updates.
+
 #include "ofMain.h"
 #include <openvr.h>
-#include "CGLRenderModel.h"
 
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -49,12 +51,10 @@ public:
 class ofxOpenVR {
 
 public:
-	void setup(std::function< void(vr::Hmd_Eye) > f);
+	void setup();
 	void exit();
 
-	void update();
-	void render();
-	void renderDistortion();
+	void update();;
 
 	void drawDebugInfo(float x = 10.0f, float y = 20.0f);
 
@@ -67,66 +67,12 @@ public:
 	glm::mat4x4 getControllerPose(vr::ETrackedControllerRole nController);
 	bool isControllerConnected(vr::ETrackedControllerRole nController);
 
-	void setDrawControllers(bool bDrawControllers);
-	void setClearColor(ofFloatColor color);
-
-	void showMirrorWindow();
-	void hideMirrorWindow();
-	void toggleMirrorWindow();
-
-	void setRenderModelForTrackedDevices(bool bRender);
-	bool getRenderModelForTrackedDevices();
-
-	void toggleGrid(float transitionDuration = 2.0f);
-	void showGrid(float transitionDuration = 2.0f);
-	void hideGrid(float transitionDuration = 2.0f);
 
 	ofEvent<ofxOpenVRControllerEventArgs> ofxOpenVRControllerEvent;
 
 private:
 
-	struct VertexDataScene
-	{
-		glm::vec3 position;
-		glm::vec2 texCoord;
-	};
 
-	struct VertexDataLens
-	{
-		glm::vec2 position;
-		glm::vec2 texCoordRed;
-		glm::vec2 texCoordGreen;
-		glm::vec2 texCoordBlue;
-	};
-
-	struct FramebufferDesc
-	{
-		GLuint _nDepthBufferId;
-		GLuint _nRenderTextureId;
-		GLuint _nRenderFramebufferId;
-		GLuint _nResolveTextureId;
-		GLuint _nResolveFramebufferId;
-	};
-	FramebufferDesc leftEyeDesc;
-	FramebufferDesc rightEyeDesc;
-
-	std::function< void(vr::Hmd_Eye) > _callableRenderFunction;
-
-	bool _bGlFinishHack;
-	bool _bIsGLInit;
-	bool _bIsGridVisible;
-	
-	ofFloatColor _clearColor;
-
-	uint32_t _nRenderWidth;
-	uint32_t _nRenderHeight;
-
-	float _fNearClip;
-	float _fFarClip;
-
-	vr::IVRSystem *_pHMD;
-
-	vr::IVRRenderModels *_pRenderModels;
 	std::string _strTrackingSystemName;
 	std::string _strTrackingSystemModelNumber;
 	vr::TrackedDevicePose_t _rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
@@ -139,19 +85,9 @@ private:
 
 	std::ostringstream _strPoseClassesOSS;
 
-	ofShader _lensShader;
-	GLuint _unLensVAO;
-	GLuint _glIDVertBuffer;
-	GLuint _glIDIndexBuffer;
-	unsigned int _uiIndexSize;
 
 	glm::mat4x4 _mat4HMDPose;
-	glm::mat4x4 _mat4eyePosLeft;
-	glm::mat4x4 _mat4eyePosRight;
 
-	glm::mat4x4 _mat4ProjectionCenter;
-	glm::mat4x4 _mat4ProjectionLeft;
-	glm::mat4x4 _mat4ProjectionRight;
 
 	int _leftControllerDeviceID;
 	int _rightControllerDeviceID;
@@ -162,34 +98,18 @@ private:
 	ofVboMesh _controllersVbo;
 	ofShader _controllersTransformShader;
 
-	bool init();
-	bool initGL();
-	bool initCompositor();
+	// The primary openVR system
+	vr::IVRSystem *system;
 
-	bool createAllShaders();
-	bool createFrameBuffer(int nWidth, int nHeight, FramebufferDesc &framebufferDesc);
+	// Attempt to connect to an active (running) instance of SteamVR
+	bool connectToSteamVR();
 
-	bool setupStereoRenderTargets();
-	void setupDistortion();
-	void setupCameras();
 
 	void updateDevicesMatrixPose();
 	void handleInput();
 	void processVREvent(const vr::VREvent_t & event);
 
-	void renderStereoTargets();
-	
-	void drawControllers();
-	void renderScene(vr::Hmd_Eye nEye);
 
 	glm::mat4x4 convertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
 
-	bool _bRenderModelForTrackedDevices;
-	ofShader _renderModelsShader;
-	CGLRenderModel* findOrLoadRenderModel(const char *pchRenderModelName);
-	void setupRenderModelForTrackedDevice(vr::TrackedDeviceIndex_t unTrackedDeviceIndex);
-	void setupRenderModels();
-
-	std::vector< CGLRenderModel * > _vecRenderModels;
-	CGLRenderModel *_rTrackedDeviceToRenderModel[vr::k_unMaxTrackedDeviceCount];
 };
