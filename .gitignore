@@ -38,3 +38,12 @@ example-drawing/bin/*
 !example-drawing/bin/data
 example-360Player/bin/*
 !example-360Player/bin/data
+
+# binaries
+*.exe
+*.exp
+*.ilk
+*.lib
+*.pdb
+bin/
+.vs/

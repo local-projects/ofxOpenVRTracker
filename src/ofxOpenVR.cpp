@@ -200,6 +200,13 @@ void ofxOpenVR::disconnect()
 }
 
 //--------------------------------------------------------------
+
+void ofxOpenVR::setState(ofxOpenVRState _state) {
+
+	state = _state;
+}
+
+//--------------------------------------------------------------
 void ofxOpenVR::getDeviceInfo() {
 
     // Question: Should I just iterate through all possible device ID's? There are only 16 possible ones. Then, we would know when devices are tracked (but might still be connected), and we could monitor all battery info, etc.
