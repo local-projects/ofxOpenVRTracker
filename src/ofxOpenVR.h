@@ -66,9 +66,9 @@ public:
 
 // State of this addon
 enum ofxOpenVRState {
-	DISCONNECTED = 0,
-	TRY_CONNECT = 1, // actively trying to connect
-	CONNECTED = 2
+	DISCONNECTED,
+	TRY_CONNECT, // actively trying to connect
+	CONNECTED
 };
 
 
@@ -107,11 +107,6 @@ public:
 
 	void drawDebugInfo(float x = 10.0f, float y = 20.0f);
 
-	glm::mat4x4 getHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
-	glm::mat4x4 getHMDMatrixPoseEye(vr::Hmd_Eye nEye);
-	glm::mat4x4 getCurrentViewProjectionMatrix(vr::Hmd_Eye nEye);
-	glm::mat4x4 getCurrentProjectionMatrix(vr::Hmd_Eye nEye);
-	glm::mat4x4 getCurrentViewMatrix(vr::Hmd_Eye nEye);
 
 	glm::mat4x4 getControllerPose(vr::ETrackedControllerRole nController);
 	bool isControllerConnected(vr::ETrackedControllerRole nController);
@@ -142,8 +137,18 @@ private:
 
     // Get all information associated with connected devices
     void getDeviceInfo();
+
+	// TODO: Should this be compartmentalized?
+	// Do we need to queue updates to each device?
+	// List of all devices which have ever been observed
+	vector< Device* > devices;
+	// Mapping from serial number to location in the devices array
+	map< string, int > serial2index;
+
+
+
     // Pose array into which device information is initially loaded
-    void getAllPoses(vr::TrackedDevicePose_t* _poses, int arrayLength);
+    //void getAllPoses(vr::TrackedDevicePose_t* _poses, int arrayLength);
     
     vr::TrackedDevicePose_t devicePoses[vr::k_unMaxTrackedDeviceCount];
     

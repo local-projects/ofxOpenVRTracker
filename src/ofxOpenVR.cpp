@@ -1,23 +1,6 @@
 #include "ofxOpenVR.h"
 
 //--------------------------------------------------------------
-// Purpose: Helper to get a string from a tracked device 
-//          property and turn it into a std::string
-//--------------------------------------------------------------
-std::string getTrackedDeviceString(vr::IVRSystem *pHmd, vr::TrackedDeviceIndex_t unDevice, vr::TrackedDeviceProperty prop, vr::TrackedPropertyError *peError = NULL)
-{
-	uint32_t unRequiredBufferLen = pHmd->GetStringTrackedDeviceProperty(unDevice, prop, NULL, 0, peError);
-	if (unRequiredBufferLen == 0)
-		return "";
-
-	char *pchBuffer = new char[unRequiredBufferLen];
-	unRequiredBufferLen = pHmd->GetStringTrackedDeviceProperty(unDevice, prop, pchBuffer, unRequiredBufferLen, peError);
-	std::string sResult = pchBuffer;
-	delete[] pchBuffer;
-	return sResult;
-}
-
-//--------------------------------------------------------------
 ofxOpenVR::ofxOpenVR() {
     
     setState(DISCONNECTED);
@@ -83,6 +66,8 @@ void ofxOpenVR::threadedFunction() {
                         
                         // Attempt to Connect
                         bool bConnected = connectToSteamVR();
+
+						ofLogNotice() << "bConnected? " + ofToString(bConnected);
                         
                         // Save this connection time
                         lastConnectionAttemptTimeMS = thisTime;
@@ -116,7 +101,6 @@ void ofxOpenVR::threadedFunction() {
                     
                     
                     // Check for new events (like button presses, status changes in the system, etc.)
-                    
                     
                     
                     
@@ -203,7 +187,6 @@ void ofxOpenVR::disconnect()
 
 void ofxOpenVR::setState(ofxOpenVRState _state) {
 
-	ofLogVerbose() << "ofxOpenVR state changed to " + ofToString(state);
 	state = _state;
 }
 
@@ -212,8 +195,132 @@ void ofxOpenVR::getDeviceInfo() {
 
     // Question: Should I just iterate through all possible device ID's? There are only 16 possible ones. Then, we would know when devices are tracked (but might still be connected), and we could monitor all battery info, etc.
     
-    // First, iterate through all tracked devices
+    // First, get all devices that are being tracked
     system->GetDeviceToAbsoluteTrackingPose(vr::ETrackingUniverseOrigin::TrackingUniverseStanding, 0, devicePoses, vr::k_unMaxTrackedDeviceCount);
+
+	// Then, iterate through all possible devices to get their info.
+	// Information that we want to retrieve for each includes:
+	// - tracked?
+	for (int i = 0; i < vr::k_unMaxTrackedDeviceCount; i++) {
+
+		// If the provided pose is valid
+		if (devicePoses[i].bPoseIsValid) {
+
+			// Should we check if this pose is new (i.e. it contains new information?)
+
+
+			// Save this pose for easier access
+			vr::TrackedDevicePose_t* pose = &(devicePoses[i]);
+
+			// Get the serial number of the device
+			vr::ETrackedPropertyError eError;
+			string serial = getStringTrackedDeviceProperty(system, i, vr::TrackedDeviceProperty::Prop_SerialNumber_String, &eError);
+			if (eError != vr::ETrackedPropertyError::TrackedProp_Success) {
+				ofLogError() << getETrackedPropertyErrorString(eError);
+			}
+
+			// Check if this device already exists
+			Device* device;
+			if (serial2index.find(serial) == serial2index.end()) {
+				// New device --> add it!
+				device = new Device();
+				devices.push_back(device);
+				// Add it to the map
+
+				// Set the serial number and the location in the vector
+				device->serialNumber = serial;
+			} 
+			else {
+				// We've seen this device before it. Update it.
+				device = devices[serial2index[serial]];
+			}
+
+			// Get the device
+
+			
+
+			// Set the ID of this device in the poses list (this is the ID we use to query the system for more information about this device)
+			device->trackedIndex = i;
+
+			// Get the transforms for this device
+			device->mat34 = pose->mDeviceToAbsoluteTracking;
+			device->mat44 = getTransformationMatrix(device->mat34);
+			device->position = getPosition(device->mat34);
+			device->quaternion = getQuaternion(device->mat34);
+
+
+
+
+
+
+		}
+
+
+
+
+
+
+	}
+
+
+
+
+
+			// Add info to the debug panel.
+			switch (system->GetTrackedDeviceClass(nDevice))
+			{
+			case vr::TrackedDeviceClass_Controller:
+				if (system->GetControllerRoleForTrackedDeviceIndex(nDevice) == vr::TrackedControllerRole_LeftHand) {
+					_strPoseClassesOSS << "Controller Left" << endl;
+				}
+				else if (system->GetControllerRoleForTrackedDeviceIndex(nDevice) == vr::TrackedControllerRole_RightHand) {
+					_strPoseClassesOSS << "Controller Right" << endl;
+				}
+				else {
+					_strPoseClassesOSS << "Controller" << endl;
+				}
+				break;
+
+			case vr::TrackedDeviceClass_HMD:
+				_strPoseClassesOSS << "HMD" << endl;
+				break;
+
+			case vr::TrackedDeviceClass_Invalid:
+				_strPoseClassesOSS << "Invalid Device Class" << endl;
+				break;
+
+			case vr::TrackedDeviceClass_GenericTracker:
+				_strPoseClassesOSS << "Generic trackers, similar to controllers" << endl;
+				break;
+
+			case vr::TrackedDeviceClass_TrackingReference:
+				_strPoseClassesOSS << "Tracking Reference - Camera" << endl;
+				break;
+
+			default:
+				_strPoseClassesOSS << "Unknown Device Class" << endl;
+				break;
+			}
+
+			// Store controllers' ID and matrix. 
+			if (system->GetTrackedDeviceClass(nDevice) == vr::TrackedDeviceClass_Controller) {
+				_iTrackedControllerCount += 1;
+
+				if (system->GetControllerRoleForTrackedDeviceIndex(nDevice) == vr::TrackedControllerRole_LeftHand) {
+					_leftControllerDeviceID = nDevice;
+					_mat4LeftControllerPose = _rmat4DevicePose[nDevice];
+				}
+				else if (system->GetControllerRoleForTrackedDeviceIndex(nDevice) == vr::TrackedControllerRole_RightHand) {
+					_rightControllerDeviceID = nDevice;
+					_mat4RightControllerPose = _rmat4DevicePose[nDevice];
+				}
+			}
+		}
+	}
+
+
+
+
     
     
     
@@ -247,86 +354,10 @@ void ofxOpenVR::update()
 	updateDevicesMatrixPose();
 }
 
-//--------------------------------------------------------------
-glm::mat4x4 ofxOpenVR::getHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
-{
-	if (!system)
-		return glm::mat4x4();
 
-	vr::HmdMatrix44_t mat = system->GetProjectionMatrix(nEye, 0.1f, 30.0f);
 
-	return glm::mat4x4(
-		mat.m[0][0], mat.m[1][0], mat.m[2][0], mat.m[3][0],
-		mat.m[0][1], mat.m[1][1], mat.m[2][1], mat.m[3][1],
-		mat.m[0][2], mat.m[1][2], mat.m[2][2], mat.m[3][2],
-		mat.m[0][3], mat.m[1][3], mat.m[2][3], mat.m[3][3]
-	);
-}
 
-//--------------------------------------------------------------
-glm::mat4x4 ofxOpenVR::getHMDMatrixPoseEye(vr::Hmd_Eye nEye)
-{
-	if (!system)
-		return glm::mat4x4();
 
-	vr::HmdMatrix34_t matEyeRight = system->GetEyeToHeadTransform(nEye);
-	glm::mat4x4 matrixObj(
-		matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
-		matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
-		matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
-		matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0f
-	);
-
-	return glm::inverse(matrixObj);
-}
-
-//--------------------------------------------------------------
-glm::mat4x4 ofxOpenVR::getCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
-{
-	glm::mat4x4 matMVP;
-	if (nEye == vr::Eye_Left)
-	{
-		matMVP = getHMDMatrixProjectionEye(vr::Eye_Left) * getHMDMatrixPoseEye(vr::Eye_Left) * _mat4HMDPose;
-	}
-	else if (nEye == vr::Eye_Right)
-	{
-		matMVP = getHMDMatrixProjectionEye(vr::Eye_Right) * getHMDMatrixPoseEye(vr::Eye_Right) *  _mat4HMDPose;
-	}
-
-	return matMVP;
-}
-
-//--------------------------------------------------------------
-glm::mat4x4 ofxOpenVR::getCurrentProjectionMatrix(vr::Hmd_Eye nEye)
-{
-	glm::mat4x4 matP;
-	if (nEye == vr::Eye_Left)
-	{
-		matP = getHMDMatrixProjectionEye(vr::Eye_Left);
-	}
-	else if (nEye == vr::Eye_Right)
-	{
-		matP = getHMDMatrixProjectionEye(vr::Eye_Right);
-	}
-
-	return matP;
-}
-
-//--------------------------------------------------------------
-glm::mat4x4 ofxOpenVR::getCurrentViewMatrix(vr::Hmd_Eye nEye)
-{
-	glm::mat4x4 matV;
-	if (nEye == vr::Eye_Left)
-	{
-		matV = getHMDMatrixPoseEye(vr::Eye_Left) * _mat4HMDPose;
-	}
-	else if (nEye == vr::Eye_Right)
-	{
-		matV = getHMDMatrixPoseEye(vr::Eye_Right) *  _mat4HMDPose;
-	}
-
-	return matV;
-}
 
 //--------------------------------------------------------------
 glm::mat4x4 ofxOpenVR::getControllerPose(vr::ETrackedControllerRole nController)
@@ -617,18 +648,6 @@ void ofxOpenVR::drawDebugInfo(float x, float y)
 	_strPoseClassesOSS << "System S/N: " << _strTrackingSystemModelNumber << endl;
 
 	ofDrawBitmapStringHighlight(_strPoseClassesOSS.str(), ofPoint(x, y), ofColor(ofColor::black, 100.0f));
-}
-
-//--------------------------------------------------------------
-glm::mat4x4 ofxOpenVR::convertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose)
-{
-	glm::mat4x4 matrixObj(
-		matPose.m[0][0], matPose.m[1][0], matPose.m[2][0], 0.0,
-		matPose.m[0][1], matPose.m[1][1], matPose.m[2][1], 0.0,
-		matPose.m[0][2], matPose.m[1][2], matPose.m[2][2], 0.0,
-		matPose.m[0][3], matPose.m[1][3], matPose.m[2][3], 1.0f
-	);
-	return matrixObj;
 }
 
 
