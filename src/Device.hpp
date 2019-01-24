@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 #include <openvr.h>
-#include "Utilities.h"
+#include "Utilities.hpp"
 //
 //// These types are the same as ETrackedDeviceClass
 //enum DeviceType {
