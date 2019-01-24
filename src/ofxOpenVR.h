@@ -19,8 +19,7 @@
 #include "ofMain.h"
 #include <openvr.h>
 #include "Device.hpp"
-
-
+#include "Utilities.h"
 
 //--------------------------------------------------------------
 enum class ControllerRole
