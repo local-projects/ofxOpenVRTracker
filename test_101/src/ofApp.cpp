@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofSetVerticalSync(false);
+	ofSetLogLevel(OF_LOG_VERBOSE);
 
 	// Setup OpenVR and connect to the SteamVR server.
     openvr.connect();

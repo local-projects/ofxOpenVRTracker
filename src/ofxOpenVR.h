@@ -66,9 +66,9 @@ public:
 
 // State of this addon
 enum ofxOpenVRState {
-	DISCONNECTED,
-	TRY_CONNECT, // actively trying to connect
-	CONNECTED
+	DISCONNECTED = 0,
+	TRY_CONNECT = 1, // actively trying to connect
+	CONNECTED = 2
 };
 
 

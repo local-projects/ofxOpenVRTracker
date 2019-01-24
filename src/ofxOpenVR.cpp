@@ -203,6 +203,7 @@ void ofxOpenVR::disconnect()
 
 void ofxOpenVR::setState(ofxOpenVRState _state) {
 
+	ofLogVerbose() << "ofxOpenVR state changed to " + ofToString(state);
 	state = _state;
 }
 
