@@ -25,11 +25,8 @@
 class Device {
 public:
     
-    // Serial Number
-    string serial = "";
-    
     // Current tracking ID (index in the list of tracked/connected devices)
-    int id = -1;
+    int trackedIndex = -1;
     
     // Type of device
     vr::ETrackedDeviceClass type = vr::TrackedDeviceClass_Invalid;
@@ -41,9 +38,24 @@ public:
     // TrackedDeviceClass_TrackingReference 4   camera, base stations (lighthouses)
     // TrackedDeviceClass_DisplayRedirect   5   ...
     
+    // Serial Model of Device
+	string serialNumber = "";
     
-    
-    
+    // Power Parameters
+	bool bWireless = false;
+	bool bCharging = false;
+	float batteryFraction = 0;	// 0 for empty, 1 for full
+
+	// Firmware Parameters
+	bool bFirmwareAvailable = false;
+
+	// Transformation Parameters
+	vr::HmdMatrix34_t mat34;	// the original pose (not very useful by itself)
+	glm::mat4 mat44;			// transformation matrix
+	glm::vec3 position;			// position
+	glm::quat quaternion;		// orientation
+
+
     
     
     

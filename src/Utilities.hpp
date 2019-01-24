@@ -19,10 +19,10 @@ glm::quat getQuaternion(vr::HmdMatrix34_t matrix);
 glm::mat4 getTransformationMatrix(vr::HmdMatrix34_t matrix);
 
 // Get the English string description of the error returned from reading a device property
-string getETrackedPropertyErrorString(int error_code);
+string getETrackedPropertyErrorString(vr::TrackedPropertyError error);
 
 // Get a string from a tracked device property and turn it into a std::string
-string getStringTrackedDeviceProperty(vr::IVRSystem *pHmd, vr::TrackedDeviceIndex_t unDevice, vr::TrackedDeviceProperty prop, vr::TrackedPropertyError *peError = NULL)
+string getStringTrackedDeviceProperty(vr::IVRSystem *system, vr::TrackedDeviceIndex_t unDevice, vr::TrackedDeviceProperty prop, vr::TrackedPropertyError *peError = NULL)
 
 
 #endif /* Utilities_hpp */
