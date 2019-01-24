@@ -7,8 +7,8 @@
 
 // Math utilities for converting values back and forth between openvr's matrices and GLM's
 
-#ifndef Utilities_h
-#define Utilities_h
+#ifndef Utilities_hpp
+#define Utilities_hpp
 
 #include "ofMain.h"
 #include <openvr.h>
