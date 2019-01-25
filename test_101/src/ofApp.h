@@ -24,12 +24,9 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-	void controllerEvent(ofxOpenVRControllerEventArgs& args);
-
-private:
+    void newDeviceData(ofxOpenVREventArgs& args);
 
 	ofxOpenVR openvr;
 
-	
 
 };

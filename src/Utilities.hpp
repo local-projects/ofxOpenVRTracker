@@ -22,7 +22,15 @@ glm::mat4 getTransformationMatrix(vr::HmdMatrix34_t matrix);
 string getETrackedPropertyErrorString(vr::TrackedPropertyError error);
 
 // Get a string from a tracked device property and turn it into a std::string
-string getStringTrackedDeviceProperty(vr::IVRSystem *system, vr::TrackedDeviceIndex_t unDevice, vr::TrackedDeviceProperty prop, vr::TrackedPropertyError *peError = NULL)
+string getStringTrackedDeviceProperty(vr::IVRSystem *system, vr::TrackedDeviceIndex_t unDevice, vr::TrackedDeviceProperty prop, vr::TrackedPropertyError *peError = NULL);
+
+// Get various kinds of properties with debug information. Returns true if property was retrieved successfully.
+bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, string& out);
+bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, float& out);
+bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, int& out);
+bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, bool& out);
+bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, uint64_t& out);
+
 
 
 #endif /* Utilities_hpp */

@@ -8,14 +8,17 @@ void ofApp::setup(){
 	// Setup OpenVR and connect to the SteamVR server.
     openvr.connect();
 
-	ofAddListener(openvr.ofxOpenVRControllerEvent, this, &ofApp::controllerEvent);
+    // Add a listener to receive new data
+    ofAddListener(openvr.newDataReceived, this, &ofApp::newDeviceData);
 }
 
 //--------------------------------------------------------------
 void ofApp::exit() {
     
-	ofRemoveListener(openvr.ofxOpenVRControllerEvent, this, &ofApp::controllerEvent);
-
+    // Remove listener for new device data
+    ofRemoveListener(openvr.newDataReceived, this, &ofApp::newDeviceData);
+    
+    // disconnect from the server
     openvr.disconnect();
 }
 
@@ -27,13 +30,17 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    openvr.drawDebugInfo();
+//    openvr.drawDebugInfo();
 }
 
 //--------------------------------------------------------------
-void ofApp::controllerEvent(ofxOpenVRControllerEventArgs& args)
-{
-	cout << "ofApp::controllerEvent > role: " << (int)args.controllerRole << " - event type: " << (int)args.eventType << " - button type: " << (int)args.buttonType << " - x: " << args.analogInput_xAxis << " - y: " << args.analogInput_yAxis << endl;
+void newDeviceData(ofxOpenVREventArgs& args) {
+    
+    cout << "======== New data received ========" << endl;
+    for (int i = 0; i < (*args.devices->getTrackers()).size(); i++) {
+        
+        cout << "\t" << (*args.devices->getTrackers())[i]->position << endl;
+    }
 }
 
 //--------------------------------------------------------------

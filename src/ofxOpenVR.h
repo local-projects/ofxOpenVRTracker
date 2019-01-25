@@ -18,51 +18,20 @@
 
 #include "ofMain.h"
 #include <openvr.h>
+#include "DeviceList.hpp"
 #include "Device.hpp"
 #include "Utilities.hpp"
 
-//--------------------------------------------------------------
-enum class ControllerRole
-{
-	Left = 0,
-	Right = 1,
-	Unknown = 3
-};
-
-//--------------------------------------------------------------
-enum class EventType
-{
-	ButtonPress = 0,
-	ButtonUnpress = 1,
-	ButtonTouch = 2,
-	ButtonUntouch = 3
-};
-
-//--------------------------------------------------------------
-enum class ButtonType
-{
-	ButtonSystem = 0,
-	ButtonApplicationMenu = 1,
-	ButtonGrip = 2,
-	ButtonTouchpad = 3,
-	ButtonTrigger = 4
-};
-
-//--------------------------------------------------------------
-class ofxOpenVRControllerEventArgs : public ofEventArgs
-{
-public:
-	ControllerRole controllerRole;
-	ButtonType buttonType;
-	EventType eventType;
-	float analogInput_xAxis;
-	float analogInput_yAxis;
-};
 
 // TODO
 // Add RemoteUI functionality
 
 
+// Event arguments for new data
+class ofxOpenVREventArgs : public ofEventArgs {
+public:
+    DeviceList* devices;
+};
 
 // State of this addon
 enum ofxOpenVRState {
@@ -71,8 +40,6 @@ enum ofxOpenVRState {
 	CONNECTED
 };
 
-
-//--------------------------------------------------------------
 class ofxOpenVR : public ofThread {
 public:
     
@@ -94,25 +61,13 @@ public:
     ///
 	void disconnect();
 
+    /// \brief List of all generic tracker devices that have ever connected. Query for more specific information.
+    ///
+    DeviceList devices;
 
-
-
-
-	// Device ID's are integers that can range from 0 to vr::k_unMaxTrackedDeviceCount. Some of the IDs are reserved for certain devices. For example, the head-mounted display (HMD) 
-
-
-
-
-	void update();
-
-	void drawDebugInfo(float x = 10.0f, float y = 20.0f);
-
-
-	glm::mat4x4 getControllerPose(vr::ETrackedControllerRole nController);
-	bool isControllerConnected(vr::ETrackedControllerRole nController);
-
-
-	ofEvent<ofxOpenVRControllerEventArgs> ofxOpenVRControllerEvent;
+    /// \brief Listen to this event to know when data is received
+    ofEvent< ofxOpenVREventArgs > newDataReceived;
+    
 
 private:
     
@@ -134,64 +89,6 @@ private:
 
 	// This pointer references the primary event/data handling abilities of OpenVR
     vr::IVRSystem *system = NULL;
-
-    // Get all information associated with connected devices
-    void getDeviceInfo();
-
-	// TODO: Should this be compartmentalized?
-	// Do we need to queue updates to each device?
-	// List of all devices which have ever been observed
-	vector< Device* > devices;
-	// Mapping from serial number to location in the devices array
-	map< string, int > serial2index;
-
-
-
-    // Pose array into which device information is initially loaded
-    //void getAllPoses(vr::TrackedDevicePose_t* _poses, int arrayLength);
     
-    vr::TrackedDevicePose_t devicePoses[vr::k_unMaxTrackedDeviceCount];
-    
-    
-    
-    
-
-
-	std::string _strTrackingSystemName;
-	std::string _strTrackingSystemModelNumber;
-	vr::TrackedDevicePose_t _rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
-	glm::mat4x4 _rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
-
-	int _iTrackedControllerCount;
-	int _iTrackedControllerCount_Last;
-	int _iValidPoseCount;
-	int _iValidPoseCount_Last;
-
-	std::ostringstream _strPoseClassesOSS;
-
-
-	glm::mat4x4 _mat4HMDPose;
-
-
-	int _leftControllerDeviceID;
-	int _rightControllerDeviceID;
-	glm::mat4x4 _mat4LeftControllerPose;
-	glm::mat4x4 _mat4RightControllerPose;
-
-	bool _bDrawControllers;
-	ofVboMesh _controllersVbo;
-	ofShader _controllersTransformShader;
-
-
-
-
-
-
-	void updateDevicesMatrixPose();
-	void handleInput();
-	void processVREvent(const vr::VREvent_t & event);
-
-
-	glm::mat4x4 convertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
-
 };
+
