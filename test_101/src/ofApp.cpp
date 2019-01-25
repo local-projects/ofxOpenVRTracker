@@ -34,7 +34,7 @@ void ofApp::draw(){
 }
 
 //--------------------------------------------------------------
-void newDeviceData(ofxOpenVREventArgs& args) {
+void ofApp::newDeviceData(ofxOpenVREventArgs& args) {
     
     cout << "======== New data received ========" << endl;
     for (int i = 0; i < (*args.devices->getTrackers()).size(); i++) {
