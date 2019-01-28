@@ -28,5 +28,7 @@ public:
 
 	ofxOpenVR openvr;
 
+	string out = "";
+	
 
 };

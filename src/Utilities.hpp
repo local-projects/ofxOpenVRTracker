@@ -31,6 +31,8 @@ bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
 bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, bool& out);
 bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, uint64_t& out);
 
+// Get the device type as an english string
+string getETrackedDeviceClassString(vr::ETrackedDeviceClass type);
 
 
 #endif /* Utilities_hpp */

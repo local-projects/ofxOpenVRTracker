@@ -30,17 +30,19 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-//    openvr.drawDebugInfo();
+	// Draw debug info to screen
+	ofDrawBitmapStringHighlight(out, 10, 20);
 }
 
 //--------------------------------------------------------------
 void ofApp::newDeviceData(ofxOpenVREventArgs& args) {
-    
-    cout << "======== New data received ========" << endl;
-    for (int i = 0; i < (*args.devices->getTrackers()).size(); i++) {
-        
-        cout << "\t" << (*args.devices->getTrackers())[i]->position << endl;
+
+	// Save debug info
+	string tmp = "";
+	for (int i = 0; i < (*args.devices->getTrackers()).size(); i++) {
+		tmp += (*args.devices->getTrackers())[i]->getDebugString() + "\n";
     }
+	out = tmp;
 }
 
 //--------------------------------------------------------------

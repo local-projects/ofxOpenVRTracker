@@ -152,7 +152,7 @@ bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
     
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
-        ofLogError() << "Reading the string property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
+		ofLogNotice() << "Reading the string property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
         
         // Failure to read
         return false;
@@ -177,7 +177,7 @@ bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
     
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
-        ofLogError() << "Reading a float property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
+		ofLogNotice() << "Reading a float property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
         
         // Failure to read
         return false;
@@ -202,7 +202,7 @@ bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
     
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
-        ofLogError() << "Reading a int32_t property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
+		ofLogNotice() << "Reading a int32_t property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
         
         // Failure to read
         return false;
@@ -226,7 +226,7 @@ bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int
     
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
-        ofLogError() << "Reading a bool property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
+		ofLogNotice() << "Reading a bool property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
         
         // Failure to read
         return false;
@@ -251,7 +251,7 @@ bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
     
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
-        ofLogError() << "Reading a uint64_t property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
+        ofLogNotice() << "Reading a uint64_t property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
         
         // Failure to read
         return false;
@@ -263,6 +263,18 @@ bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
 }
 
 //--------------------------------------------------------------
+string getETrackedDeviceClassString(vr::ETrackedDeviceClass type) {
+
+	switch (type) {
+		case 0: return "invalid"; break;
+		case 1: return "hmd"; break;
+		case 2: return "controller"; break;
+		case 3: return "tracker"; break;
+		case 4: return "base station"; break;
+		case 5: return "display redirect"; break;
+		default: return "unknown"; break;
+	}
+}
 
 //--------------------------------------------------------------
 

@@ -4,9 +4,6 @@
 ofxOpenVR::ofxOpenVR() {
     
     setState(DISCONNECTED);
-    
-//    // Create enough space for all devices to be tracked
-//    devicePoses.resize(vr::k_unMaxTrackedDeviceCount);
 }
 
 //--------------------------------------------------------------

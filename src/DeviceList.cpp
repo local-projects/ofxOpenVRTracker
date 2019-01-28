@@ -16,7 +16,7 @@ DeviceList::DeviceList() {
 
 //--------------------------------------------------------------
 bool DeviceList::update(vr::IVRSystem* system) {
-    
+
     if (system == NULL) return false;
     
     // First, get all devices that are being tracked
@@ -38,9 +38,7 @@ bool DeviceList::update(vr::IVRSystem* system) {
         
         // If a device is connected to power, update its information
         if (pose->bDeviceIsConnected) {
-            
-            // Update transformation, battery %, etc.
-            
+                        
             // First, get its identifiable information (serial number)
             string serial = "";
             if (!getStringProperty(system, vr::ETrackedDeviceProperty::Prop_SerialNumber_String, i, serial)) continue;
@@ -49,45 +47,20 @@ bool DeviceList::update(vr::IVRSystem* system) {
             connectedDevices.insert(serial);
             
             // Get the device with this serial number
-            Device* device;
-            if (getDevice(serial, device)) {
-                
-                // New device, so add its class
-                device->type = system->GetTrackedDeviceClass(i);
-                
-                // If it's a tracker, add it to the tracker list
-                if (device->isGenericTracker()) {
-                    trackers.push_back(device);
-                }
-            }
+			Device* device = getDevice(system, i, serial);
             
             // Set the current tracking index
             device->trackedIndex = i;
             
-            // Mark that this device is connected (to what?, how?)
+            // Mark that this device is connected to bluetooth
             device->bConnected = true;
-            
-            
-            // Only continue if this device type is generic controller?
-            
-            
-            // Update the battery info if we can get it
-            getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, i, device->batteryFraction);
-            
-            // Update the wireless info if we can get it
-            getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsWireless_Bool, i, device->bWireless);
-            
-            // Get the charging info
-            getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, i, device->bCharging);
-            
-            // Get "never tracked" property -- not sure what this means. Perhaps it is connected (charging or on bluetooth) but it has never been seen by the base stations?
-            getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_NeverTracked_Bool, i, device->bNeverTracked);
-            
-            getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, i, device->bFirmwareUpdateAvailable);
+                        
+            // Update the power, firmware and misc properties of this device
+			updateGeneralProperties(system, i, device);
             
             if (pose->bPoseIsValid) {
                 
-                // Mark that this device is tracking (what kind of tracking?)
+                // Mark that this device is actively tracking (location is being updated)
                 device->bTracking = true;
                 
                 // Pose is valid. Device is still being tracked. Update the transformation information.
@@ -107,12 +80,11 @@ bool DeviceList::update(vr::IVRSystem* system) {
                 
                 if (device->bTracking) {
                     // Device has just switched from tracking to not tracking
-                    
                 }
                 
                 // Save that this isn't tracking
                 device->bTracking = false;
-                
+				device->trackedIndex = -1;
             }
             
         } else {
@@ -131,17 +103,16 @@ bool DeviceList::update(vr::IVRSystem* system) {
             
             if (allDevices[i]->bConnected) {
                 // Device has just switched from connected to not connected.
-                
             }
             
             if (allDevices[i]->bTracking) {
                 // Device has just switched from tracking to not tracking.
-                
             }
             
             // Update the parameters
             allDevices[i]->bConnected = false;
             allDevices[i]->bTracking = false;
+			allDevices[i]->trackedIndex = -1;
         }
     }
     // Should there be some debouncing of when we can't see the tracker momentarily?
@@ -155,31 +126,52 @@ bool DeviceList::update(vr::IVRSystem* system) {
 }
 
 //--------------------------------------------------------------
-bool DeviceList::getDevice(string serial, Device* deviceOut) {
-    
-    if (serial2index.find(serial) == serial2index.end()) {
-        
-        // Serial number wasn't found, so this a new device.
-        deviceOut = new Device();
-        deviceOut->serialNumber = serial;
-        
-        // Add it to the vector.
-        allDevices.push_back(deviceOut);
-        
-        // Add it to the map
-        serial2index[serial] = allDevices.size()-1;
-        
-        // New device; return true
-        return true;
-        
-    } else {
-        
-        // This is not a new device. We've seen it before. Return a pointer to it.
-        deviceOut = allDevices[ serial2index[serial] ];
-        
-        // Old device; return false. (Note: false only means it isn't new in this context).
-        return false;
-    }
+Device* DeviceList::getDevice(vr::IVRSystem* system, int trackedIndex, string serial) {
+
+	Device* device;
+	if (isNewDevice(serial)) {
+		// allocate space
+		device = new Device();
+		// Set its serial #
+		device->serialNumber = serial;
+		// set its type
+		device->type = system->GetTrackedDeviceClass(trackedIndex);
+		// Add this device to the list
+		addNewDevice(device);
+	}
+	else {
+		// Retrive the device with this serial number
+		device = getExistingDevice(serial);
+	}
+	return device;
+}
+
+//--------------------------------------------------------------
+bool DeviceList::isNewDevice(string serial) {
+
+	return (serial2index.find(serial) == serial2index.end());
+}
+
+//--------------------------------------------------------------
+Device* DeviceList::getExistingDevice(string serial) {
+
+	// Return a pointer to the device
+	return allDevices[serial2index[serial]];
+}
+
+//--------------------------------------------------------------
+void DeviceList::addNewDevice(Device* device) {
+
+	// Add this new device to the vector
+	allDevices.push_back(device);
+
+	// Add this device to the map
+	serial2index[device->serialNumber] = allDevices.size() - 1;
+
+	// add the device to the list of tracker if it is a tracker
+	if (device->isGenericTracker()) {
+		trackers.push_back(device);
+	}
 }
                 
 //--------------------------------------------------------------
@@ -195,6 +187,47 @@ vector< Device* >* DeviceList::getTrackers() {
 }
 
 //--------------------------------------------------------------
+void DeviceList::updateGeneralProperties(vr::IVRSystem* system, int trackedIndex, Device* device) {
+
+	// Different properties apply to different kinds of devices.
+	// Minimize the amount of errors by only querying the correct properties for each device type.
+	switch (device->type) {
+	case 0: break;
+	case 1: {		// hmd
+
+
+	}; break;
+	case 2: {		// controller
+
+		getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, trackedIndex, device->batteryFraction);
+
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, trackedIndex, device->bCharging);
+
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable);
+
+
+	}; break;
+	case 3: {		// tracker
+
+		// Update the battery info if we can get it
+		getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, trackedIndex, device->batteryFraction);
+
+		// Get the charging info
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, trackedIndex, device->bCharging);
+
+		// Check if a firmware update is available
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable);
+
+	}; break;
+	case 4: {		// base station
+
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable);
+
+	};  break;
+	case 5: break;	// display redirect
+	default: break;
+	}
+}
 
 //--------------------------------------------------------------
 

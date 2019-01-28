@@ -15,6 +15,10 @@
 
 // This class handles adding new devices into a list and provides helpers for retrieving relevant devices and their parameters.
 
+// ETrackedDeviceProperties that have no relevance include:
+// vr::ETrackedDeviceProperty::Prop_NeverTracked_Bool
+// vr::ETrackedDeviceProperty::Prop_DeviceIsWireless_Bool
+
 class DeviceList {
 public:
     
@@ -39,16 +43,28 @@ private:
     vector< Device* > allDevices;
     // mapping from a device's serial number to its index in this vector
     map< string, int > serial2index;
-    
-    // Get the device with the corresponding serial number, or create one if it doesn't exist. Returns true if it is a new device and false if it is one we've seen before.
-    bool getDevice(string serial, Device* deviceOut);
-    
-    // Copies of all generic trackers ever observed are kept in here.
-    vector< Device* > trackers;
+
+	// Get a device with a specific serial number or create it if it doesn't exist
+	Device* getDevice(vr::IVRSystem* system, int trackedIndex, string serial);
+
+	// Copies of all generic trackers ever observed are kept in here.
+	vector< Device* > trackers;
+
+
+	// Check if a serial number is new
+	bool isNewDevice(string serial);
+
+	// Get a device that already exists (must check to make sure it exists!)
+	Device* getExistingDevice(string serial);
+
+	// Add new device (assumes device already has serial number inside
+	void addNewDevice(Device* device);
     
     // Holds the poses returned each time we look for tracked devices
     vector< vr::TrackedDevicePose_t > poses;
     
+	// Update the general power, wireless, charging, firmware, etc. properties of a device
+	void updateGeneralProperties(vr::IVRSystem* system, int trackedIndex, Device* device);
 };
 
 #endif /* DeviceList_hpp */

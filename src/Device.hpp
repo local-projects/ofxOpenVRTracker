@@ -17,10 +17,16 @@ public:
     
     Device();
     
-    // Current tracking ID (index in the list of tracked/connected devices)
+	/// \brief The elapsed time at which this device was first observed by this addon.
+	///
+	uint64_t firstObservationTimeMicros = 0;
+
+	/// \brief The current tracking index (in the list of tracked devices). If the device is not being tracked, this will be -1.
+	///
     int trackedIndex = -1;
     
-    // Type of device
+    /// \brief Class of the device
+	///
     vr::ETrackedDeviceClass type = vr::TrackedDeviceClass_Invalid;
     // POSSIBLE TYPES:
     // TrackedDeviceClass_Invalid           0   invalid id
@@ -41,8 +47,9 @@ public:
     /// \brief Check if this device is a head-mounted display (HMD).
     ///
     bool isHeadMountedDisplay();
-    
-    // Serial Model of Device
+
+    /// \brief Serial number of the device
+	///
 	string serialNumber = "";
     
     
@@ -67,36 +74,42 @@ public:
     glm::vec3 linearVelocity;
     glm::vec3 angularVelocity;
     
-    
-    // Power Parameters
-    bool bWireless = false;
+    /// \brief Is this device charging?
+	///
     bool bCharging = false;
-    float batteryFraction = 0;    // 0 for empty, 1 for full
+    
+	/// \brief What is the fraction of battery power remaining in this device? (1 = full, 0 = empty)
+	///
+	float batteryFraction = 0;
     
     /// \brief Mark that a new set of data has been set.
     ///
     void markNewData();
     
+	/// \brief Event that is pinged when new transformation information has been received.
+	///
+	ofEvent<bool> newDataReceived;
     
     
     // Create a method for adding a piece of information to a queue (for mats, velocities, etc.)
     
     
     
-    
-    // Is this device currently connected (Q: to power or bluetooth?)
+	/// \brief Is this device currently connected over bluetooth to its dongle? If the device is not connected, it cannot be tracked.
+	///
     bool bConnected = false;
     
-    // Is this device currently being tracked? (Q: connected or tracking?)
+    /// \brief Is this device currently being tracked? (Do the base stations see and recongize this device?) If so, location information will be updated.
+	///
     bool bTracking = false;
     
-    // Not sure what this is
-    bool bNeverTracked = true;
-    
-    // Firmware Parameters
+    /// \brief Is a firmware update available for this device?
+	///
     bool bFirmwareUpdateAvailable = false;
     
-    
+    /// \brief Get a string containing all debug information for each relevant parameter contained within this device.
+	///
+	string getDebugString();
     
     
 };
