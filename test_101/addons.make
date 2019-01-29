@@ -1,1 +1,1 @@
-ofxOpenVR
+ofxOpenVRTracker

@@ -35,7 +35,7 @@ void ofApp::draw(){
 }
 
 //--------------------------------------------------------------
-void ofApp::newDeviceData(ofxOpenVREventArgs& args) {
+void ofApp::newDeviceData(ofxOpenVRTrackerEventArgs& args) {
 
 	// Save debug info
 	string tmp = "";

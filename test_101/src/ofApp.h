@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxOpenVR.h"
+#include "ofxOpenVRTracker.h"
 
 //--------------------------------------------------------------
 class ofApp : public ofBaseApp {
@@ -24,9 +24,9 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-    void newDeviceData(ofxOpenVREventArgs& args);
+    void newDeviceData(ofxOpenVRTrackerEventArgs& args);
 
-	ofxOpenVR openvr;
+	ofxOpenVRTracker openvr;
 
 	string out = "";
 	

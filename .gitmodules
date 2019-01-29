@@ -1,3 +1,0 @@
-[submodule "libs/OpenVR"]
-	path = libs/OpenVR
-	url = https://github.com/bensnell/OpenVR.git

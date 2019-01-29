@@ -1,13 +1,13 @@
-#include "ofxOpenVR.h"
+#include "ofxOpenVRTracker.h"
 
 //--------------------------------------------------------------
-ofxOpenVR::ofxOpenVR() {
+ofxOpenVRTracker::ofxOpenVRTracker() {
     
     setState(DISCONNECTED);
 }
 
 //--------------------------------------------------------------
-void ofxOpenVR::connect(int maxAttempts, int waitTimeMS) {
+void ofxOpenVRTracker::connect(int maxAttempts, int waitTimeMS) {
     
     // Store these parameters
     connectionAttemptsMax = maxAttempts;
@@ -38,7 +38,7 @@ void ofxOpenVR::connect(int maxAttempts, int waitTimeMS) {
 }
 
 //--------------------------------------------------------------
-void ofxOpenVR::threadedFunction() {
+void ofxOpenVRTracker::threadedFunction() {
 
 	while (isThreadRunning()) {
 
@@ -105,7 +105,7 @@ void ofxOpenVR::threadedFunction() {
                     
                     
                     // Flag that we have received new information using an ofEvent
-                    ofxOpenVREventArgs _args;
+                    ofxOpenVRTrackerEventArgs _args;
                     _args.devices = &devices;
                     ofNotifyEvent(newDataReceived, _args);
                 }
@@ -118,7 +118,7 @@ void ofxOpenVR::threadedFunction() {
 }
 
 //--------------------------------------------------------------
-bool ofxOpenVR::connectToSteamVR()
+bool ofxOpenVRTracker::connectToSteamVR()
 {
 	// Loading the SteamVR Runtime
 	ofLogNotice() << "Attempting to connect to SteamVR...";
@@ -159,13 +159,13 @@ bool ofxOpenVR::connectToSteamVR()
 }
 
 //--------------------------------------------------------------
-bool ofxOpenVR::isConnected() {
+bool ofxOpenVRTracker::isConnected() {
     
     return state == CONNECTED;
 }
 
 //--------------------------------------------------------------
-void ofxOpenVR::disconnect()
+void ofxOpenVRTracker::disconnect()
 {
 	if (system || isConnected()) {
         
@@ -181,7 +181,7 @@ void ofxOpenVR::disconnect()
 }
 
 //--------------------------------------------------------------
-void ofxOpenVR::setState(ofxOpenVRState _state) {
+void ofxOpenVRTracker::setState(ofxOpenVRTrackerState _state) {
 
 	state = _state;
 }
@@ -207,7 +207,7 @@ void ofxOpenVR::setState(ofxOpenVRState _state) {
 
 
 // Example for processing events
-//void ofxOpenVR::handleInput()
+//void ofxOpenVRTracker::handleInput()
 //{
 //    // Process SteamVR events
 //    vr::VREvent_t event;

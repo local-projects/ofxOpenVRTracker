@@ -28,24 +28,24 @@
 
 
 // Event arguments for new data
-class ofxOpenVREventArgs : public ofEventArgs {
+class ofxOpenVRTrackerEventArgs : public ofEventArgs {
 public:
     DeviceList* devices;
 };
 
 // State of this addon
-enum ofxOpenVRState {
+enum ofxOpenVRTrackerState {
 	DISCONNECTED,
 	TRY_CONNECT, // actively trying to connect
 	CONNECTED
 };
 
-class ofxOpenVR : public ofThread {
+class ofxOpenVRTracker : public ofThread {
 public:
     
-    /// \brief Create an instance of ofxOpenVR. There should only be one per program.
+    /// \brief Create an instance of ofxOpenVRTracker. There should only be one per program.
     ///
-    ofxOpenVR();
+    ofxOpenVRTracker();
 
     /// \brief Attempt to connect to a running instance of SteamVR.
     ///
@@ -66,15 +66,15 @@ public:
     DeviceList devices;
 
     /// \brief Listen to this event to know when data is received
-    ofEvent< ofxOpenVREventArgs > newDataReceived;
+    ofEvent< ofxOpenVRTrackerEventArgs > newDataReceived;
     
 
 private:
     
     // State of the app
-    ofxOpenVRState state;
+    ofxOpenVRTrackerState state;
     // set the state of this app
-    void setState(ofxOpenVRState _state);
+    void setState(ofxOpenVRTrackerState _state);
 
     // (function run in the thread)
 	void threadedFunction();
