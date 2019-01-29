@@ -8,9 +8,10 @@ By following the build instructions below, you should be able to track generic t
 ## Build Instructions
 
 1. Create an openframeworks' project using the Project Generator, or add the addon's source files and the OpenVR headers to your existing project.
-2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxOpenVRTracker.props` file.
-3. Program your application, following the usage exemplified in [test_101](https://github.com/bensnell/ofxOpenVR/tree/master/test_101/src).
-4. Compile your application.
+2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your solution to select `Add Existing Property Sheet...` and select the `ofxOpenVRTracker.props` file.
+3. Open the Visual Studio solution file. If libs/OpenVR/samples has been included, remove it from the solution explorer. This "samples" folder should not be included.
+4. Program your application, following the usage exemplified in [test_101](https://github.com/bensnell/ofxOpenVR/tree/master/test_101/src).
+5. Compile your application.
 
 ## Running SteamVR
 
