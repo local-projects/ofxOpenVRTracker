@@ -1,4 +1,4 @@
-ofxOpenVR 
+ofxOpenVRTracker
 ====================
 
 This addon updates [smallfly's ofxOpenVR addon](https://github.com/smallfly/ofxOpenVR) by making it compatible with [OpenVR v1.1.3b](https://github.com/bensnell/OpenVR/tree/ofxOpenVR_v1.1.3b) and changes the focus of the addon from HMD rendering to tracking of generic trackers.
@@ -8,7 +8,7 @@ By following the build instructions below, you should be able to track generic t
 ## Build Instructions
 
 1. Create an openframeworks' project using the Project Generator, or add the addon's source files and the OpenVR headers to your existing project.
-2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxOpenVR.props` file.
+2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxOpenVRTracker.props` file.
 3. Program your application, following the usage exemplified in [test_101](https://github.com/bensnell/ofxOpenVR/tree/master/test_101/src).
 4. Compile your application.
 
