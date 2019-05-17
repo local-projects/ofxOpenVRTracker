@@ -5,6 +5,16 @@ This addon updates [smallfly's ofxOpenVR addon](https://github.com/smallfly/ofxO
 
 By following the build instructions below, you should be able to track generic trackers using OF and SteamVR, without the HMD.
 
+
+
+## Dependencies
+
+Steam, SteamVR
+
+Install the Link Box Bluetooth Driver (will be prompted after room boundaries defined)
+
+
+
 ## Build Instructions
 
 1. Create an openframeworks' project using the Project Generator, or add the addon's source files and the OpenVR headers to your existing project.
@@ -17,7 +27,21 @@ By following the build instructions below, you should be able to track generic t
 
 In order for this addon to work, there must be on your computer a running instance of SteamVR. 
 
-In order to run the Vive without a headset, two settings files must be changed before SteamVR runs. These two files are provided here in their corollary file structure in *steamvr_settings*. Replace the respective files in your computer with those provided here:
+
+
+SteamVR requires that a user perform room-setup. Download the files [here](https://www.reddit.com/r/Vive/comments/4d3c6h/i_made_some_small_batch_files_for_switching/) and place them in the correct location within the Steam directory.
+
+
+
+In order to run the Vive without a headset, two settings files must be changed before SteamVR runs. The first file
+
+
+
+also change render info of the null driver to 0, 0, 0, 0 for x, y, w, h
+
+
+
+These two files are provided here in their corollary file structure in *steamvr_settings*. Replace the respective files in your computer with those provided here:
 
 `C:/Program Files (x86)/Steam/steamapps/common/SteamVR/resources/settings/default.vrsettings`
 
@@ -38,6 +62,18 @@ The app is designed specifically for generic tracker pucks and provides a number
 Trackers have two non-exclusive states they are in at any point in time. Trackers have a connection status that describe whether they are connected over bluetooth to the computer. This is revealed by the `bConnected` variable in a device. Trackers also have a tracking status that describes whether they are actively being tracked by the base stations. If a device has a true `bTracked` variable, then their positions, orientations, etc. are being updated constantly.
 
 Trackers must be paired with their own bluetooth dongle. Multiple trackers cannot connect to the same dongle.
+
+
+
+## Base Stations Setup
+
+The base stations must be on modes 'b' and 'c' if the sync cable isn't used (this is the default configuration). See [here](https://www.vive.com/us/support/vive/category_howto/installing-the-base-stations.html) for more info.
+
+## Troubleshooting
+
+SteamVR fails to start and displays the message "Compositor Not Available" 
+
+- The headset needs to be plugged into the main 
 
 ## Notes
 

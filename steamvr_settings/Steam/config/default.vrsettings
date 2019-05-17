@@ -1,0 +1,10 @@
+{
+	"steamvr": {
+		"requireHmd": false,
+		"forcedDriver": "null",
+		"forcedHmd": ""
+	},
+	"power" : {
+		"turnOffControllersTimeout" : 86400.0
+	}
+}
