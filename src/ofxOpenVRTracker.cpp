@@ -66,8 +66,6 @@ void ofxOpenVRTracker::threadedFunction() {
                         
                         // Attempt to Connect
                         bool bConnected = connectToSteamVR();
-
-						ofLogNotice() << "bConnected? " + ofToString(bConnected);
                         
                         // Save this connection time
                         lastConnectionAttemptTimeMS = thisTime;
@@ -187,6 +185,10 @@ void ofxOpenVRTracker::setState(ofxOpenVRTrackerState _state) {
 }
 
 //--------------------------------------------------------------
+void ofxOpenVRTracker::exit() {
+
+	waitForThread(true, 3000);
+}
 
 //--------------------------------------------------------------
 

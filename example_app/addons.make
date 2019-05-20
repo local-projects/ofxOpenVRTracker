@@ -1,1 +1,1 @@
-ofxOpenVRTracker
+../../../ExternalAddons/ofxOpenVRTracker

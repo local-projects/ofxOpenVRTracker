@@ -67,6 +67,9 @@ public:
 
     /// \brief Listen to this event to know when data is received
     ofEvent< ofxOpenVRTrackerEventArgs > newDataReceived;
+
+	/// \brief Ends the thread
+	void exit();
     
 
 private:

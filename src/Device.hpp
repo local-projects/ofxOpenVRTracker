@@ -111,6 +111,9 @@ public:
 	///
 	string getDebugString();
     
+
+	/// \brief Is this device being updated with new tracking data?
+	bool isActive() { return bTracking; };
     
 };
 
