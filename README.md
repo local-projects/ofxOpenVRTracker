@@ -73,7 +73,11 @@ The base stations must be on modes 'b' and 'c' if the sync cable isn't used (thi
 
 SteamVR fails to start and displays the message "Compositor Not Available" 
 
-- The headset needs to be plugged into the main 
+- The headset needs to be plugged into the main HDMI port of the computer
+
+Trackers won't connect (their lights stay blue). 
+
+- Sometimes, cables come loose within the trackers and controllers. This has been [observed](https://community.viveport.com/t5/Technical-Support/Unpairable-and-untrackable-blue-light-controller/td-p/7834) for people who use them extensively. See [here](https://www.youtube.com/watch?v=0mi3KWG5mic) for instructions on how to resecure the cables.
 
 ## Notes
 
