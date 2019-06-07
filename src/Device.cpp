@@ -79,7 +79,7 @@ string Device::getDebugString() {
 	ss << std::noshowpos << setprecision(2);
 	ss << "charging?    \t" << bCharging << "\n";
 	ss << "battery %    \t" << batteryFraction << "\n";
-	ss << "firmwr avail?\t" << bFirmwareUpdateAvailable << "\n";
+	ss << "firmwr avail?\t" << bFirmwareUpdateAvailable;
 
 	return ss.str();
 }
