@@ -1,0 +1,23 @@
+{
+	"steamvr": {
+      "activateMultipleDrivers" : true,
+      "forcedDriver" : "null",
+      "allowAsyncReprojection" : false,
+      "allowInterleavedReprojection" : false,
+      "allowSupersampleFiltering" : false,
+      "enableHomeApp" : false,
+      "mirrorViewGeometry" : "1387 675 2272 1270",
+      "showMirrorView" : true,
+      "requireHmd" : false
+	},
+	"power" : {
+		"turnOffControllersTimeout" : 86400.0
+	},
+	"DismissedWarnings" : {
+      "DismissableWarning_BasestationSingleBaseModeHint" : true,
+      "DismissableWarning_BasestationsTooFarApart" : true,
+      "DismissableWarning_RunTutorialAgain" : true,
+      "DismissableWarning_UnknownHardwareDetected" : true,
+      "DismissableWarning_WarningsForTheFirstTime" : true
+   }
+}
