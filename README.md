@@ -5,23 +5,23 @@ This addon updates [smallfly's ofxOpenVR addon](https://github.com/smallfly/ofxO
 
 
 
-### Hardware
+### Hardware Needed
 
 This addon's current instantiation is designed to work with Vive Pro (and v2 base stations). Some of the functionality may not be available with previous versions of the HTC Vive. Other VR platforms like the Oculus have not been tested, but should be compatible with some modifications.
 
-The Vive Pro link box is not needed to run the trackers in a headless system. The v2.0 base stations are capable of connecting to either the bluetooth dongles or the computer's native bluetooth (it is unclear which they connect to). Unplug the link box from your computer if it is currently connected.
+The Vive Pro link box is not needed to run the trackers in a headless system. The v2.0 base stations are capable of connecting to either the bluetooth watchman dongles or the link box. Since the link box isn't needed for this application, they will connect to the watchman dongles. Unplug the link box from your computer if it is currently connected.
 
 Make sure one bluetooth dongle is connected to computer for each tracker you plan on using.
 
 
 
-### System Requirements
+### Building this Addon
+
+##### System Requirements
 
 This addon was developed on Windows 10 in Visual Studio 2019 using an x64 architecture.
 
-
-
-### Dependencies
+##### Dependencies
 
 Please install the following pieces of software, if they are not already installed:
 
@@ -29,9 +29,7 @@ Please install the following pieces of software, if they are not already install
 
 - [Vive Pro Drivers](https://enterprise.vive.com/us/setup/vive-pro/)
 
-
-
-### Build Instructions
+##### Build Instructions
 
 1. Create an Openframeworks project using the Project Generator.
 2. Open the Visual Studio solution file. If *libs/OpenVR/samples* has been included, remove it from the solution explorer. This "samples" folder should not be included.
@@ -50,17 +48,13 @@ Within this addon, there is a folder *steamvr_settings* that contains files with
 
 Note: These files also increase the standby timeout for controllers and trackers, so they don't fall asleep when they aren't being used. The timeout in these settings is one day, set in the first file under *power > turnOffControllersTimeout*. This value is in seconds.
 
-
-
-### Tracker Connections
+##### Tracker Connections
 
 Trackers have two non-exclusive states they are in at any point in time. Trackers have a connection status that describe whether they are connected over bluetooth to the computer. This is revealed by the `bConnected` variable in a device. Trackers also have a tracking status that describes whether they are actively being tracked by the base stations. If a device has a true `bTracked` variable, then their positions, orientations, etc. are being updated constantly.
 
 Trackers must be paired with their own bluetooth dongle. Multiple trackers cannot connect to the same dongle.
 
-
-
-### Streamlining Startup
+##### Streamlining Startup
 
 *SteamVR* is a standalone application that can run independent of the *Steam* desktop app. To create a shortcut to this application (to more efficiently connect, open *Steam*, select *Library* > *Tools* from the toolbar. Scroll down to *SteamVR* and right click on it, then select *Create Desktop Shortcut*. A shortcut on your desktop will now run SteamVR, even if Steam isn't open.
 
@@ -78,23 +72,25 @@ Trackers won't connect (their lights stay blue).
 
 
 
-### Vive (Regular) Notes
+### References
 
-The base stations must be on modes 'b' and 'c' if the sync cable isn't used (this is the default configuration). See [here](https://www.vive.com/us/support/vive/category_howto/installing-the-base-stations.html) for more info.
+This [thread](https://steamcommunity.com/app/358720/discussions/0/485624149150957321/?ctp=2#c2183537632735247703) describes how to run the Vive Pro (and potentially the regular Vive) headless as of July 2019.
 
+More [suppressible warnings](https://github.com/SteamDatabase/GameTracking-SteamVR/blob/636487cb2523be56f5c4c69f976452da7b093e9a/content/vrmonitor/translations/vrmonitor_finnish.txt) can be found here.
 
-
-### Useful Terminology
+##### Useful Terminology
 
 HMD: head mounted display
 Tracker: generic tracker ("puck")
 Controller: handheld controller stick
 Base Station: lighthouse (the black IR boxes)
 
+##### Vive (Regular) Notes
+
+The base stations must be on modes 'b' and 'c' if the sync cable isn't used (this is the default configuration). See [here](https://www.vive.com/us/support/vive/category_howto/installing-the-base-stations.html) for more info.
 
 
-### References
 
-This [thread](https://steamcommunity.com/app/358720/discussions/0/485624149150957321/?ctp=2#c2183537632735247703) describes how to run the Vive Pro (and potentially the regular Vive) headless as of July 2019.
+### Deprecated Documentation
 
-More [suppressible warnings](https://github.com/SteamDatabase/GameTracking-SteamVR/blob/636487cb2523be56f5c4c69f976452da7b093e9a/content/vrmonitor/translations/vrmonitor_finnish.txt) can be found here.
+In previous builds, a property sheet file was used to add the necessary dependencies to the Visual Studio project. We no longer need this file, but it is included in *_deprecated*  for reference.
