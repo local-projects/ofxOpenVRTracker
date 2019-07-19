@@ -1,6 +1,7 @@
 {
 	"driver_null" : {
 		"enable" : true,
+		"loadPriority" : 999,
 		"serialNumber" : "Null Serial Number", 
 		"modelNumber" : "Null Model Number",
 		"windowX" : 0,

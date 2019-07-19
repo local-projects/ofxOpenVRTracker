@@ -70,6 +70,10 @@ Trackers won't connect (their lights stay blue).
 
 - Sometimes, cables come loose within the trackers and controllers. This has been [observed](https://community.viveport.com/t5/Technical-Support/Unpairable-and-untrackable-blue-light-controller/td-p/7834) for people who use them extensively. See [here](https://www.youtube.com/watch?v=0mi3KWG5mic) for instructions on how to resecure the cables.
 
+A mirrored view of the headset appears onscreen.
+
+- If you don't want this view to show, try removing the *default.vrsettings* file from the *null > resources > settings* folder. It's unclear why this works, but sometimes, it does.
+
 
 
 ### References
