@@ -74,6 +74,10 @@ A mirrored view of the headset appears onscreen.
 
 - If you don't want this view to show, try removing the *default.vrsettings* file from the *null > resources > settings* folder. It's unclear why this works, but sometimes, it does.
 
+I'm uncertain which base stations are connected
+
+- To obtain a (top-view) plan of the play area, the range of connected base stations, and the location of trackers, in the SteamVR small window, from the dropdown menu select *Settings > Developer > View Room Overview*
+
 
 
 ### References
