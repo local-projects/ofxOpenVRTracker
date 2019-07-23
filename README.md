@@ -11,7 +11,7 @@ This addon's current instantiation is designed to work with Vive Pro (and v2 bas
 
 The Vive Pro link box is not needed to run the trackers in a headless system. The v2.0 base stations are capable of connecting to either the bluetooth watchman dongles or the link box. Since the link box isn't needed for this application, they will connect to the watchman dongles. Unplug the link box from your computer if it is currently connected.
 
-Make sure one bluetooth dongle is connected to computer for each tracker you plan on using.
+Make sure one bluetooth dongle is connected to computer for each tracker you plan on using. Furthermore, make sure each dongle is placed at least 18" away from any computer.
 
 
 
@@ -77,6 +77,24 @@ A mirrored view of the headset appears onscreen.
 I'm uncertain which base stations are connected
 
 - To obtain a (top-view) plan of the play area, the range of connected base stations, and the location of trackers, in the SteamVR small window, from the dropdown menu select *Settings > Developer > View Room Overview*
+
+I can't pair a new tracker. 
+
+- Dongles placed 18" from computer?
+- Try to reconnect trackers by selecting from the SteamVR *Menu > Devices > Pair Controller*
+
+SteamVR isn't starting, yet the Steam App shows it as already running
+
+- Close the OF application (which locks onto the SteamVR instance and appears as a SteamVR application), the open SteamVR, then open the OF app again.
+- If this still doesn't work, close the OF App and close all Steam or SteamVR tasks from the Windows Task Manager. Then start SteamVR, then start the OF app.
+
+SteamVR welcomes you and asks you to connect your headset.
+
+- The steamvr.vrsettings file was likely corrupted (incorrect JSON) and reset, so re-set its contents using the files provided.
+
+SteamVR popup: "An error occurred while updating SteamVR (app running)" **OR** SteamVR attempts to re-open every time a new device is connected
+
+- Make sure the *steamvr.vrsettings file* has the `power` setting `"autoLaunchSteamVROnButtonPress": false`
 
 
 
