@@ -95,6 +95,7 @@ SteamVR welcomes you and asks you to connect your headset.
 SteamVR popup: "An error occurred while updating SteamVR (app running)" **OR** SteamVR attempts to re-open every time a new device is connected
 
 - Make sure the *steamvr.vrsettings file* has the `power` setting `"autoLaunchSteamVROnButtonPress": false`
+- Try restarting your computer.
 
 
 
