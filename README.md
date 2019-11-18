@@ -97,7 +97,9 @@ SteamVR popup: "An error occurred while updating SteamVR (app running)" **OR** S
 - Make sure the *steamvr.vrsettings file* has the `power` setting `"autoLaunchSteamVROnButtonPress": false`
 - Try restarting your computer.
 
+SteamVR won't start and/or connect the trackers
 
+- The **VIVEPORT Desktop Service** Application prevents this. Search Windows for "Services." Find this application in the list, right click on it and select *Properties.* Under *Startup Type,* select *Disabled*. Apply these changes and restart the machine.
 
 ### References
 
