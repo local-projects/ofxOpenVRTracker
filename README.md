@@ -11,7 +11,7 @@ This addon's current instantiation is designed to work with Vive Pro (and v2 bas
 
 The Vive Pro link box is not needed to run the trackers in a headless system. The v2.0 base stations are capable of connecting to either the bluetooth watchman dongles or the link box. Since the link box isn't needed for this application, they will connect to the watchman dongles. Unplug the link box from your computer if it is currently connected.
 
-Make sure one bluetooth dongle is connected to computer for each tracker you plan on using. Furthermore, make sure each dongle is placed at least 18" away from any computer.
+Make sure one bluetooth dongle is connected to computer for each tracker you plan on using. Furthermore, make sure each dongle is placed at least 18" away from any computer. This one tracker to one dongle relationship has been confirmed as required as of 11/21/2019.
 
 
 
