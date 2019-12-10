@@ -27,7 +27,7 @@ Please install the following pieces of software, if they are not already install
 
 - [Steam](https://store.steampowered.com/about/), SteamVR (download from the Steam Store after Steam is installed)
 
-- [Vive Pro Drivers](https://enterprise.vive.com/us/setup/vive-pro/)
+Note: Do *NOT* install [Vive Pro Drivers](https://enterprise.vive.com/us/setup/vive-pro/), as they will cause problems with SteamVR later on.
 
 ##### Build Instructions
 
