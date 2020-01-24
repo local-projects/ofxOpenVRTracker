@@ -1,4 +1,4 @@
 [submodule "libs/OpenVR"]
 	path = libs/OpenVR
-	url = https://github.com/bensnell/OpenVR.git
+	url = https://github.com/local-projects/OpenVR.git
 	branch = v1.1.3b
