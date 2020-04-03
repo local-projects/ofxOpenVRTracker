@@ -15,11 +15,11 @@
 # and the PG will write to the console the kind of error and in which line it is
 
 meta:
-	ADDON_NAME = ofxOpenVR
+	ADDON_NAME = ofxOpenVRTracker
 	ADDON_DESCRIPTION = Addon to access VR hardware using the OpenVR API from Valve Software
-	ADDON_AUTHOR = Hugues Bruyère
+	ADDON_AUTHOR = Local Projects
 	ADDON_TAGS = "VR" "OpenVR" "SteamVR" "HTC Vive" "Oculus Rift"
-	ADDON_URL = http://github.com/smallfly/ofxOpenVR
+	ADDON_URL = http://github.com/local-projects/ofxOpenVRTracker
 
 common:
 	# dependencies with other addons, a list of them separated by spaces 
