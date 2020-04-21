@@ -5,7 +5,7 @@
 //  Created by Ben Snell on 1/24/19.
 //
 
-#include "DeviceList.hpp"
+#include "ofxOpenVRDeviceList.hpp"
 
 //--------------------------------------------------------------
 DeviceList::DeviceList() {

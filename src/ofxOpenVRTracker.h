@@ -18,9 +18,9 @@
 
 #include "ofMain.h"
 #include <openvr.h>
-#include "DeviceList.hpp"
-#include "Device.hpp"
-#include "Utilities.hpp"
+#include "ofxOpenVRDeviceList.hpp"
+#include "ofxOpenVRDevice.hpp"
+#include "ofxOpenVRUtilities.hpp"
 
 
 // TODO

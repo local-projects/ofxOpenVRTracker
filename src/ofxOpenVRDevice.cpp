@@ -5,7 +5,7 @@
 //  Created by Ben Snell on 1/23/19.
 //
 
-#include "Device.hpp"
+#include "ofxOpenVRDevice.hpp"
 
 //--------------------------------------------------------------
 Device::Device() {

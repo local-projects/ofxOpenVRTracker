@@ -5,12 +5,12 @@
 //  Created by Ben Snell on 1/23/19.
 //
 
-#ifndef Device_hpp
-#define Device_hpp
+#ifndef ofxOpenVRDevice_hpp
+#define ofxOpenVRDevice_hpp
 
 #include "ofMain.h"
 #include <openvr.h>
-#include "Utilities.hpp"
+#include "ofxOpenVRUtilities.hpp"
 
 class Device {
 public:
@@ -117,4 +117,4 @@ public:
     
 };
 
-#endif /* Device_hpp */
+#endif /* ofxOpenVRDevice_hpp */

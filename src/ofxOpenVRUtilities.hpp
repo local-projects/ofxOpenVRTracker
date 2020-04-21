@@ -5,8 +5,8 @@
 //  Created by Ben Snell on 1/24/19.
 //
 
-#ifndef Utilities_hpp
-#define Utilities_hpp
+#ifndef ofxOpenVRUtilities_hpp
+#define ofxOpenVRUtilities_hpp
 
 #include "ofMain.h"
 #include <openvr.h>
@@ -35,4 +35,4 @@ bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
 string getETrackedDeviceClassString(vr::ETrackedDeviceClass type);
 
 
-#endif /* Utilities_hpp */
+#endif /* ofxOpenVRUtilities_hpp */

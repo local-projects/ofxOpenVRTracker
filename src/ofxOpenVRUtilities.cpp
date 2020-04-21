@@ -5,7 +5,7 @@
 //  Created by Ben Snell on 1/24/19.
 //
 
-#include "Utilities.hpp"
+#include "ofxOpenVRUtilities.hpp"
 
 //--------------------------------------------------------------
 glm::vec3 getPosition(vr::HmdMatrix34_t matrix) {

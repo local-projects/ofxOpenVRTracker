@@ -5,13 +5,13 @@
 //  Created by Ben Snell on 1/24/19.
 //
 
-#ifndef DeviceList_hpp
-#define DeviceList_hpp
+#ifndef ofxOpenVRDeviceList_hpp
+#define ofxOpenVRDeviceList_hpp
 
 #include "ofMain.h"
 #include <openvr.h>
-#include "Device.hpp"
-#include "Utilities.hpp"
+#include "ofxOpenVRDevice.hpp"
+#include "ofxOpenVRUtilities.hpp"
 
 // This class handles adding new devices into a list and provides helpers for retrieving relevant devices and their parameters.
 
@@ -67,4 +67,4 @@ private:
 	void updateGeneralProperties(vr::IVRSystem* system, int trackedIndex, Device* device);
 };
 
-#endif /* DeviceList_hpp */
+#endif /* ofxOpenVRDeviceList_hpp */
