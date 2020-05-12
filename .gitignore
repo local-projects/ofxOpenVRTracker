@@ -47,3 +47,6 @@ example-360Player/bin/*
 *.pdb
 bin/
 .vs/
+
+!example*/*.vcxproj*
+!example*/*.sln

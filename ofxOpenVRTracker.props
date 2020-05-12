@@ -15,7 +15,7 @@
       <AdditionalDependencies>openvr_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>-->
   </ItemDefinitionGroup>
-  <ItemGroup>
+<!--   <ItemGroup>
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDevice.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDeviceList.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRTracker.cpp" />
@@ -29,8 +29,8 @@
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\sharedlibtools_public.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\strtools_public.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\vrpathregistry_public.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+  </ItemGroup> -->
+<!--   <ItemGroup>
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDevice.hpp" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDeviceList.hpp" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRTracker.h" />
@@ -48,7 +48,7 @@
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\sharedlibtools_public.h" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\strtools_public.h" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\vrpathregistry_public.h" />
-  </ItemGroup>
+  </ItemGroup> -->
   <ItemGroup Condition="'$(Platform)'=='Win32'">
   	<Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win32\openvr_api.dll">
   		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
