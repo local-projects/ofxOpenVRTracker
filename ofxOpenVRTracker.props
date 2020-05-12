@@ -54,9 +54,17 @@
   		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   		<Visible>false</Visible>
   	</Content>
+    <Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win32\openvr_api.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)'=='x64'">
     <Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win64\openvr_api.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win64\openvr_api.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>
