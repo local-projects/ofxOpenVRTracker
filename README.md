@@ -32,8 +32,8 @@ Note: Do *NOT* install [Vive Pro Drivers](https://enterprise.vive.com/us/setup/v
 ##### Build Instructions
 
 1. Create an Openframeworks project using the Project Generator.
-2. Open the Visual Studio solution file. If *libs/OpenVR/samples* has been included, remove it from the solution explorer. This "samples" folder should not be included.
-3. Program your application, following the usage exemplified in the *example_app* provided.
+2. Open the Visual Studio solution file. Under the *Property Manager*, add the property sheet `ofxOpenVRTracker.props` to all configurations.
+3. Program your application, following the usage exemplified in the *example* provided.
 4. Compile your application.
 
 
@@ -117,9 +117,3 @@ Base Station: lighthouse (the black IR boxes)
 ##### Vive (Regular) Notes
 
 The base stations must be on modes 'b' and 'c' if the sync cable isn't used (this is the default configuration). See [here](https://www.vive.com/us/support/vive/category_howto/installing-the-base-stations.html) for more info.
-
-
-
-### Deprecated Documentation
-
-In previous builds, a property sheet file was used to add the necessary dependencies to the Visual Studio project. We no longer need this file, but it is included in *_deprecated*  for reference.
