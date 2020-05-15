@@ -54,14 +54,14 @@ common:
 	# in the src folders in libs and the root of the addon. if your addon needs
 	# to include files in different places or a different set of files per platform
 	# they can be specified here
-	ADDON_SOURCES += OpenVR/src/*.h
-	ADDON_SOURCES += OpenVR/src/*.cpp
-	ADDON_SOURCES += OpenVR/src/json/*.h
-	ADDON_SOURCES += OpenVR/src/json/*.cpp
-	ADDON_SOURCES += OpenVR/src/vrcommon/*.h
-	ADDON_SOURCES += OpenVR/src/vrcommon/*.cpp
-	ADDON_SOURCES += OpenVR/headers/*.h
-	ADDON_SOURCES += OpenVR/headers/*.cpp
+# 	ADDON_SOURCES += OpenVR/src/*.h
+# 	ADDON_SOURCES += OpenVR/src/*.cpp
+# 	ADDON_SOURCES += OpenVR/src/json/*.h
+# 	ADDON_SOURCES += OpenVR/src/json/*.cpp
+# 	ADDON_SOURCES += OpenVR/src/vrcommon/*.h
+# 	ADDON_SOURCES += OpenVR/src/vrcommon/*.cpp
+# 	ADDON_SOURCES += OpenVR/headers/*.h
+# 	ADDON_SOURCES += OpenVR/headers/*.cpp
 	
 	# some addons need resources to be copied to the bin/data folder of the project
 	# specify here any files that need to be copied, you can use wildcards like * and ?

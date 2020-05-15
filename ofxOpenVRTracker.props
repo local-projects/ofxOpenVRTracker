@@ -1,72 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets" />
   <PropertyGroup>
-    <OFXOPENVRTRACKER_ROOT Condition="'$(OFXOPENVRTRACKER_ROOT)'==''">$(OF_ROOT)\..\ExternalAddons\ofxOpenVRTracker</OFXOPENVRTRACKER_ROOT>
+    <OFXOPENVRTRACKER_ROOT Condition="'$(OFXOPENVRTRACKER_ROOT)'==''">$(MSBuildThisFileDirectory)</OFXOPENVRTRACKER_ROOT>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories Condition="'$(Platform)'=='Win32'">$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win32;$(OFXOPENVRTRACKER_ROOT)\OpenVR\headers;$(OFXOPENVRTRACKER_ROOT)\OpenVR\src;$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\json;$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon;$(OFXOPENVRTRACKER_ROOT)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Platform)'=='x64'">$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win64;$(OFXOPENVRTRACKER_ROOT)\OpenVR\headers;$(OFXOPENVRTRACKER_ROOT)\OpenVR\src;$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\json;$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon;$(OFXOPENVRTRACKER_ROOT)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Platform)'=='Win32'">$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\bin\win32;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\json;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon;$(OFXOPENVRTRACKER_ROOT)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Platform)'=='x64'">$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\bin\win64;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\json;$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon;$(OFXOPENVRTRACKER_ROOT)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <!--<Link>
-      <AdditionalLibraryDirectories Condition="'$(Platform)'=='Win32'">$(OFXOPENVRTRACKER_ROOT)\OpenVR\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalLibraryDirectories Condition="'$(Platform)'=='x64'">$(OFXOPENVRTRACKER_ROOT)\OpenVR\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+<!--     <Link>
+      <AdditionalLibraryDirectories Condition="'$(Platform)'=='Win32'">$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories Condition="'$(Platform)'=='x64'">$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>openvr_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>-->
+    </Link> -->
   </ItemDefinitionGroup>
-<!--   <ItemGroup>
+  <ItemGroup>
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDevice.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDeviceList.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRTracker.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRUtilities.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\jsoncpp.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\openvr_api_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\dirtools_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\envvartools_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\hmderrors_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\pathtools_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\sharedlibtools_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\strtools_public.cpp" />
-    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\vrpathregistry_public.cpp" />
-  </ItemGroup> -->
-<!--   <ItemGroup>
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\jsoncpp.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\openvr_api_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\dirtools_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\envvartools_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\hmderrors_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\pathtools_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\sharedlibtools_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\strtools_public.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\vrpathregistry_public.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDevice.hpp" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDeviceList.hpp" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRTracker.h" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRUtilities.hpp" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\headers\openvr.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\headers\openvr_capi.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\headers\openvr_driver.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\ivrclientcore.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\json\json-forwards.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\json\json.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\dirtools_public.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\envvartools_public.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\hmderrors_public.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\pathtools_public.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\sharedlibtools_public.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\strtools_public.h" />
-    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\src\vrcommon\vrpathregistry_public.h" />
-  </ItemGroup> -->
-  <ItemGroup Condition="'$(Platform)'=='Win32'">
-  	<Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win32\openvr_api.dll">
-  		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  		<Visible>false</Visible>
-  	</Content>
-    <Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win32\openvr_api.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </Content>
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers\openvr.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers\openvr_capi.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers\openvr_driver.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\ivrclientcore.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\json\json-forwards.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\json\json.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\dirtools_public.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\envvartools_public.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\hmderrors_public.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\pathtools_public.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\sharedlibtools_public.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\strtools_public.h" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\vrpathregistry_public.h" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='x64'">
-    <Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win64\openvr_api.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </Content>
-    <Content Include="$(OFXOPENVRTRACKER_ROOT)\OpenVR\bin\win64\openvr_api.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </Content>
-  </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Win32'">
+    	<Content Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\bin\win32\openvr_api.dll">
+    		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    		<Visible>false</Visible>
+    	</Content>
+      <Content Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\bin\win32\openvr_api.pdb">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>false</Visible>
+      </Content>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='x64'">
+      <Content Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\bin\win64\openvr_api.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>false</Visible>
+      </Content>
+      <Content Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\bin\win64\openvr_api.pdb">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>false</Visible>
+      </Content>
+    </ItemGroup>
 </Project>
