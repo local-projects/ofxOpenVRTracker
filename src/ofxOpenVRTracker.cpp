@@ -119,18 +119,27 @@ void ofxOpenVRTracker::threadedFunction() {
                     _args.devices = &devices;
                     ofNotifyEvent(newDataReceived, _args);
 
-                    // Optionally output data at a desired FPS
-                    if (bOverrideFPS) {
-
+                    // Update the frame rate
+                    // Reset the appropriate counters if any changes have occurred
+                    if (bOverrideFPS != bLastOverrideFPS) {
+                        resampler.reset();
+                        while (!frameTimesMS.empty()) frameTimesMS.pop();
+                    }
+                    if (bOverrideFPS) { 
                         // Update the resampler
                         resampler.setDesiredFPS(desiredFPS);
                         resampler.update();
 
                         // Sleep for the wait time
-                        resampler.flagStartSleep();
                         sleep(resampler.getSleepDurationMS());
-                        resampler.flagStopSleep();
                     }
+                    else {
+                        // Update the natural frame rate
+                        uint64_t thisTime = ofGetElapsedTimeMillis();
+                        frameTimesMS.push(thisTime);
+                        while ((frameTimesMS.front() + 1000) <= thisTime) frameTimesMS.pop();
+                    }
+                    bLastOverrideFPS = bOverrideFPS;
                 }
             } break;
                 

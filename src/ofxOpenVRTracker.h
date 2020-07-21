@@ -78,6 +78,9 @@ public:
 	/// \brief Ends the thread
 	void exit();
 
+    // Get the FPS (depends on FPS mode)
+    float getFPS() { return isFPSOverriden() ? getDesiredFPS() : float(frameTimesMS.size()); }
+
     // FPS Override Controls
     bool isFPSOverriden() { return bOverrideFPS; }
     float getDesiredFPS() { return desiredFPS; }
@@ -114,9 +117,12 @@ private:
     // Framerate settings
     // Should we override with a custom frame rate?
     bool bOverrideFPS = false;
+    bool bLastOverrideFPS = false;
     float desiredFPS = 240.0;
     TemporalResampler resampler;
-
+    
+    // Non-resampled framerate calculations
+    queue<uint64_t> frameTimesMS;
     
 };
 

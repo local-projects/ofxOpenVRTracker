@@ -24,10 +24,6 @@ public:
     // (User sleeps on their own)
     int getSleepDurationMS() { return roundedWaitMS; }
 
-    // Flag when user's sleep starts and stops
-    void flagStartSleep();
-    void flagStopSleep();
-
     // Reset the resampler
     void reset();
 
@@ -47,10 +43,6 @@ private:
     //queue<double> processDurationQueue;
     //double processDurationQueueSum = 0.0;
 
-    uint64_t startSleepTimeUS = 0;
-    uint64_t stopSleepTimeUS = 0;
-    double lastObservedSleepDurationMS = 0.0;
-    double avgObservedSleepDurationErrorMS = 0.0;
 
 };
 
