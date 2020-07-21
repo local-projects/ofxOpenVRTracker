@@ -19,6 +19,7 @@
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDeviceList.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRTracker.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRUtilities.cpp" />
+    <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\src\TemporalResampler.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\jsoncpp.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\openvr_api_public.cpp" />
     <ClCompile Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\src\vrcommon\dirtools_public.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRDeviceList.hpp" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRTracker.h" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\ofxOpenVRUtilities.hpp" />
+    <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\src\TemporalResampler.hpp" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers\openvr.h" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers\openvr_capi.h" />
     <ClInclude Include="$(OFXOPENVRTRACKER_ROOT)\libs\OpenVR\headers\openvr_driver.h" />

@@ -7,11 +7,25 @@ ofxOpenVRTracker::ofxOpenVRTracker() {
 }
 
 //--------------------------------------------------------------
+void ofxOpenVRTracker::setup() {
+#ifdef OFXOPENVRTRACKER_USE_RUI
+    RUI_NEW_GROUP("ofxOpenVRTracker");
+    RUI_SHARE_PARAM_WCN("OpenVR- Max Connect Attempts", connectionAttemptsMax, 0, 1000);
+    RUI_SHARE_PARAM_WCN("OpenVR- Reconnect Interval", connectionAttemptWaitTime, 0, 100000);
+    RUI_SHARE_PARAM_WCN("OpenVR- Override FPS", bOverrideFPS);
+    RUI_SHARE_PARAM_WCN("OpenVR- Desired FPS", desiredFPS, 0, 10000);
+#endif
+}
+
+//--------------------------------------------------------------
 void ofxOpenVRTracker::connect(int maxAttempts, int waitTimeMS) {
     
     // Store these parameters
-    connectionAttemptsMax = maxAttempts;
-    connectionAttemptWaitTime = waitTimeMS;
+    if (maxAttempts >= 0) connectionAttemptsMax = maxAttempts;
+    if (waitTimeMS >= 0) connectionAttemptWaitTime = waitTimeMS;
+#ifdef OFXOPENVRTRACKER_USE_RUI
+    if (maxAttempts >= 0 || waitTimeMS >= 0) RUI_PUSH_TO_CLIENT();
+#endif
     lastConnectionAttemptTimeMS = -connectionAttemptWaitTime;
     
     // Reset the counter
@@ -100,12 +114,23 @@ void ofxOpenVRTracker::threadedFunction() {
                     // Check for new events (like button presses, status changes in the system, etc.)
                     // Integrate this information with that already received. Q: Should this focus on info relating to the system's state since device info has already been received?
                     
-                    
-                    
                     // Flag that we have received new information using an ofEvent
                     ofxOpenVRTrackerEventArgs _args;
                     _args.devices = &devices;
                     ofNotifyEvent(newDataReceived, _args);
+
+                    // Optionally output data at a desired FPS
+                    if (bOverrideFPS) {
+
+                        // Update the resampler
+                        resampler.setDesiredFPS(desiredFPS);
+                        resampler.update();
+
+                        // Sleep for the wait time
+                        resampler.flagStartSleep();
+                        sleep(resampler.getSleepDurationMS());
+                        resampler.flagStopSleep();
+                    }
                 }
             } break;
                 

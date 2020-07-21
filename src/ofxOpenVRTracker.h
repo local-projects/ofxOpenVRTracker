@@ -21,11 +21,15 @@
 #include "ofxOpenVRDeviceList.hpp"
 #include "ofxOpenVRDevice.hpp"
 #include "ofxOpenVRUtilities.hpp"
+#include "TemporalResampler.hpp"
 
-
-// TODO
-// Add RemoteUI functionality
-
+// Add RemoteUI functionality if available
+#if defined(__has_include)
+#if __has_include("ofxRemoteUIServer.h")
+#include "ofxRemoteUIServer.h"
+#define OFXOPENVRTRACKER_USE_RUI
+#endif
+#endif
 
 // Event arguments for new data
 class ofxOpenVRTrackerEventArgs : public ofEventArgs {
@@ -47,11 +51,14 @@ public:
     ///
     ofxOpenVRTracker();
 
+    // Setup parameters (useful if ofxRemoteUI is available)
+    void setup();
+
     /// \brief Attempt to connect to a running instance of SteamVR.
     ///
     /// A running instance of SteamVR is required for this addon to work properly. Call this function once at the statrt of your program. It will attempt to connect continuously for a maxAttempts number of times, waiting waitTime milliseconds between each until connected or unsuccessful.
     ///
-	void connect(int maxAttempts = 5, int waitTimeMS = 5000);
+	void connect(int maxAttempts = -1, int waitTimeMS = -1);
 
 	/// \brief Check whether we're connected to SteamVR
     ///
@@ -70,7 +77,18 @@ public:
 
 	/// \brief Ends the thread
 	void exit();
-    
+
+    // FPS Override Controls
+    bool isFPSOverriden() { return bOverrideFPS; }
+    float getDesiredFPS() { return desiredFPS; }
+    void setOverrideFPS(bool _bOverrideFPS, float _desiredFPS) {
+        if (bOverrideFPS == _bOverrideFPS && desiredFPS == _desiredFPS) return;
+        bOverrideFPS = _bOverrideFPS;
+        desiredFPS = _desiredFPS;
+#ifdef OFXOPENVRTRACKER_USE_RUI
+        RUI_PUSH_TO_CLIENT();
+#endif
+    }
 
 private:
     
@@ -86,12 +104,19 @@ private:
 	bool connectToSteamVR();
     // Connection parameters
 	int connectionAttemptsCounter = 0;
-	int connectionAttemptsMax;
-	int connectionAttemptWaitTime; // milliseconds
+	int connectionAttemptsMax = 5;
+	int connectionAttemptWaitTime = 5000; // milliseconds
     int64_t lastConnectionAttemptTimeMS;
 
 	// This pointer references the primary event/data handling abilities of OpenVR
     vr::IVRSystem *system = NULL;
+
+    // Framerate settings
+    // Should we override with a custom frame rate?
+    bool bOverrideFPS = false;
+    float desiredFPS = 240.0;
+    TemporalResampler resampler;
+
     
 };
 
