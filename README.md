@@ -108,6 +108,9 @@ SteamVR prompts you to complete *Room Setup*
 System calibration changes mid-program execution
 
 - This is observable through a sudden change in coordinate information coming from OpenVR (or Vive, SteamVR, etc.). The data will likely have a new origin and some translation, since a new base station has been automatically set as the "reference" base station. It is unclear *why* this happens. Looking into the SteamVR log files shows that a new universe is selected due to a change in the devices present. One reason this may happen is that SteamVR automatically choses the best universe (coordinate system + calibration) given the set of devices present. Thus, if a new device (base station, tracker, etc.) comes online and a different universe more closely matches this device set, SteamVR automatically switches the universe. (It's unclear whether this can be explicitly switched off with a toggle). All aavailable universes are listed in the `chaperone_info.json` file. Configuration files in the `C:\Program Files (x86)\Steam\config\lighthouse` directory appear also to have some effect on this choice. Following the relevant steps above in the [section above](#headless-vive-pro-steamvr-setup) should resolve this problem, by providing only one universe to choose from.
+- References:
+  - [Automatic Universe Selection](https://github.com/alsoknownasfoo/ViveArcadeTool/issues/2#issuecomment-494911749)
+  - [Commented Chaperone Reference File](https://developer.valvesoftware.com/wiki/SteamVR/chaperone_info.vrchap)
 
 
 ### References
