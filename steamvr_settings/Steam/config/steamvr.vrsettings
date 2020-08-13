@@ -8,7 +8,7 @@
     },
     "power" : {
         "powerOffOnExit" : false,
-        "turnOffControllersTimeout" : 86400,
+        "turnOffControllersTimeout" : 604800,
         "autoLaunchSteamVROnButtonPress": false
     },
     "steamvr" : {
