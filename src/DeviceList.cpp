@@ -12,6 +12,10 @@ DeviceList::DeviceList() {
     
     // Create enough space for all devices to be tracked
     poses.resize(vr::k_unMaxTrackedDeviceCount);
+
+	// Define all ignored errors
+	ignoreErrors.insert(vr::ETrackedPropertyError::TrackedProp_NotYetAvailable);
+	ignoreErrors.insert(vr::ETrackedPropertyError::TrackedProp_UnknownProperty);
 }
 
 //--------------------------------------------------------------
@@ -201,29 +205,29 @@ void DeviceList::updateGeneralProperties(vr::IVRSystem* system, int trackedIndex
 	}; break;
 	case 2: {		// controller
 
-		getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, trackedIndex, device->batteryFraction);
+		getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, trackedIndex, device->batteryFraction, &ignoreErrors);
 
-		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, trackedIndex, device->bCharging);
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, trackedIndex, device->bCharging, &ignoreErrors);
 
-		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable);
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable, &ignoreErrors);
 
 
 	}; break;
 	case 3: {		// tracker
 
 		// Update the battery info if we can get it
-		getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, trackedIndex, device->batteryFraction);
+		getFloatProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceBatteryPercentage_Float, trackedIndex, device->batteryFraction, &ignoreErrors);
 
 		// Get the charging info
-		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, trackedIndex, device->bCharging);
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_DeviceIsCharging_Bool, trackedIndex, device->bCharging, &ignoreErrors);
 
 		// Check if a firmware update is available
-		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable);
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable, &ignoreErrors);
 
 	}; break;
 	case 4: {		// base station
 
-		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable);
+		getBoolProperty(system, vr::ETrackedDeviceProperty::Prop_Firmware_UpdateAvailable_Bool, trackedIndex, device->bFirmwareUpdateAvailable, &ignoreErrors);
 
 	};  break;
 	case 5: break;	// display redirect

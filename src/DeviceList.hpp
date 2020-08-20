@@ -65,6 +65,9 @@ private:
     
 	// Update the general power, wireless, charging, firmware, etc. properties of a device
 	void updateGeneralProperties(vr::IVRSystem* system, int trackedIndex, Device* device);
+
+	// List of errors that we will ignore when printing debug info
+	set<vr::ETrackedPropertyError> ignoreErrors;
 };
 
 #endif /* DeviceList_hpp */

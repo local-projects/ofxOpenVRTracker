@@ -25,11 +25,12 @@ string getETrackedPropertyErrorString(vr::TrackedPropertyError error);
 string getStringTrackedDeviceProperty(vr::IVRSystem *system, vr::TrackedDeviceIndex_t unDevice, vr::TrackedDeviceProperty prop, vr::TrackedPropertyError *peError = NULL);
 
 // Get various kinds of properties with debug information. Returns true if property was retrieved successfully.
-bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, string& out);
-bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, float& out);
-bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, int& out);
-bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, bool& out);
-bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, uint64_t& out);
+// Optionally provide a list of errors that should be ignored when printing debug information.
+bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, string& out, set<vr::ETrackedPropertyError>* ignoreErrors = NULL);
+bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, float& out, set<vr::ETrackedPropertyError>* ignoreErrors = NULL);
+bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, int& out, set<vr::ETrackedPropertyError>* ignoreErrors = NULL);
+bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, bool& out, set<vr::ETrackedPropertyError>* ignoreErrors = NULL);
+bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, uint64_t& out, set<vr::ETrackedPropertyError>* ignoreErrors = NULL);
 
 // Get the device type as an english string
 string getETrackedDeviceClassString(vr::ETrackedDeviceClass type);

@@ -138,7 +138,7 @@ string getStringTrackedDeviceProperty(vr::IVRSystem *system, vr::TrackedDeviceIn
 
 //--------------------------------------------------------------
 
-bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, string& out) {
+bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, string& out, set<vr::ETrackedPropertyError>* ignoreErrors) {
     
     // Allocate error
     vr::ETrackedPropertyError error;
@@ -153,7 +153,7 @@ bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
 
-		if (error != vr::ETrackedPropertyError::TrackedProp_NotYetAvailable) {
+		if (ignoreErrors == NULL || ignoreErrors->find(error) == ignoreErrors->end()) {
 			ofLogNotice("ofxOpenVRTracker") << "Reading the string property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
 		}
 
@@ -167,7 +167,7 @@ bool getStringProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
 }
 
 //--------------------------------------------------------------
-bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, float& out) {
+bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, float& out, set<vr::ETrackedPropertyError>* ignoreErrors) {
     
     // Allocate error
     vr::ETrackedPropertyError error;
@@ -181,7 +181,7 @@ bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
 
-		if (error != vr::ETrackedPropertyError::TrackedProp_NotYetAvailable) {
+		if (ignoreErrors == NULL || ignoreErrors->find(error) == ignoreErrors->end()) {
 			ofLogNotice("ofxOpenVRTracker") << "Reading a float property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
 		}
 
@@ -195,7 +195,7 @@ bool getFloatProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
 }
 
 //--------------------------------------------------------------
-bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, int& out) {
+bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, int& out, set<vr::ETrackedPropertyError>* ignoreErrors) {
     
     // Allocate error
     vr::ETrackedPropertyError error;
@@ -209,8 +209,8 @@ bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
 
-		if (error != vr::ETrackedPropertyError::TrackedProp_NotYetAvailable) {
-			ofLogNotice("ofxOpenVRTracker") << "Reading a int32_t property of device " + 
+		if (ignoreErrors == NULL || ignoreErrors->find(error) == ignoreErrors->end()) {
+			ofLogNotice("ofxOpenVRTracker") << "Reading a int32_t property of device " +
 				ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
 		}
 
@@ -223,7 +223,7 @@ bool getInt32Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, in
     return true;
 }
 //--------------------------------------------------------------
-bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, bool& out) {
+bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, bool& out, set<vr::ETrackedPropertyError>* ignoreErrors) {
     
     // Allocate error
     vr::ETrackedPropertyError error;
@@ -239,8 +239,8 @@ bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int
 
 		// Only print if the message is useful.
 		// If a property is not available yet, but will be soon, don't print it.
-		if (error != vr::ETrackedPropertyError::TrackedProp_NotYetAvailable) {
-			ofLogNotice("ofxOpenVRTracker") << "Reading a bool property of device " + ofToString(trackingID) + 
+		if (ignoreErrors == NULL || ignoreErrors->find(error) == ignoreErrors->end()) {
+			ofLogNotice("ofxOpenVRTracker") << "Reading a bool property of device " + ofToString(trackingID) +
 				" results in an error: " + getETrackedPropertyErrorString(error);
 		}
 
@@ -254,7 +254,7 @@ bool getBoolProperty(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int
 }
 
 //--------------------------------------------------------------
-bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, uint64_t& out) {
+bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, int trackingID, uint64_t& out, set<vr::ETrackedPropertyError>* ignoreErrors) {
     
     // Allocate error
     vr::ETrackedPropertyError error;
@@ -268,7 +268,7 @@ bool getUInt64Property(vr::IVRSystem* system, vr::ETrackedDeviceProperty prop, i
     // Check for errors
     if (error != vr::ETrackedPropertyError::TrackedProp_Success) {
 
-		if (error != vr::ETrackedPropertyError::TrackedProp_NotYetAvailable) {
+		if (ignoreErrors == NULL || ignoreErrors->find(error) == ignoreErrors->end()) {
 			ofLogNotice("ofxOpenVRTracker") << "Reading a uint64_t property of device " + ofToString(trackingID) + " results in an error: " + getETrackedPropertyErrorString(error);
 		}
 
