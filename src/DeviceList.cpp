@@ -189,6 +189,8 @@ vector< Device* >* DeviceList::getTrackers() {
 //--------------------------------------------------------------
 void DeviceList::updateGeneralProperties(vr::IVRSystem* system, int trackedIndex, Device* device) {
 
+	// TODO: First check if device is connected?
+
 	// Different properties apply to different kinds of devices.
 	// Minimize the amount of errors by only querying the correct properties for each device type.
 	switch (device->type) {
