@@ -72,7 +72,14 @@ Trackers won't connect (their lights stay blue).
 
 A mirrored view of the headset appears onscreen.
 
-- If you don't want this view to show, try removing the *default.vrsettings* file from the *null > resources > settings* folder. It's unclear why this works, but sometimes, it does.
+- In the *default.vrsettings* file from the *null > resources > settings* folder, remove the following lines:
+
+```
+"windowX": 0,
+"windowY": 0,
+"windowWidth": 2160,
+"windowHeight": 1200,
+```
 
 I'm uncertain which base stations are connected
 
