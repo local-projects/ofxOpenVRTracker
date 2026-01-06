@@ -25,7 +25,7 @@ bool DeviceList::update(vr::IVRSystem* system) {
     
     // First, get all devices that are being tracked
     system->GetDeviceToAbsoluteTrackingPose(
-            vr::ETrackingUniverseOrigin::TrackingUniverseStanding,
+            vr::ETrackingUniverseOrigin::TrackingUniverseRawAndUncalibrated,
             0,
             &(poses[0]),
             vr::k_unMaxTrackedDeviceCount);
